@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Simple image gallery for React applications",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/designus/react-simple-gallery.git"
@@ -20,5 +17,24 @@
   "bugs": {
     "url": "https://github.com/designus/react-simple-gallery/issues"
   },
-  "homepage": "https://github.com/designus/react-simple-gallery#readme"
+  "homepage": "https://github.com/designus/react-simple-gallery#readme",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@vitejs/plugin-react": "^1.0.7",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.5",
+    "tailwindcss": "^3.0.13",
+    "typescript": "^4.4.4",
+    "vite": "^2.7.2"
+  }
 }
