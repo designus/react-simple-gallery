@@ -4,8 +4,8 @@ import classNames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { GalleryImage } from '../gallery';
 import CloseIcon from './close-icon.svg?component';
-import LeftIcon from './left-icon.svg?component';
-import RightIcon from './right-icon.svg?component';
+import Left from './left-icon.svg?component';
+import Right from './right-icon.svg?component';
 
 import './lightbox.css';
   
@@ -81,7 +81,7 @@ export function Lightbox<T>(props: Props<T>) {
   const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
 
   const renderArrow = (className: string, newIndex: number, direction: Direction) => {
-    const Icon = direction === 'left' ? LeftIcon : RightIcon;
+    const Icon = direction === 'left' ? Left : Right;
     return props.images.length > 1 ? (
       <CSSTransition in={animateArrow[direction]} timeout={200} classNames="arrow">
         <div
@@ -109,15 +109,19 @@ export function Lightbox<T>(props: Props<T>) {
             className
           )}
         >
-          <Icon
+          <div
             aria-label={`${direction} arrow`}
             onClick={() => handleMove(newIndex, direction)}
             role="button"
-            tabIndex={0} 
-            className={classNames('fill-white w-12 h-12 sm:w-16 sm:h-16 outline-none', {
+            tabIndex={0}
+            className={classNames('rounded-full bg-white bg-opacity-70 w-46px h-46px sm:w-56px sm:h-56px relative hover:bg-opacity-100 flex justify-center items-center', {
               'transform -translate-y-25px': hasSomeImagesTitle
             })}
-          />
+          >
+            <Icon
+              className={classNames('fill-gray-700 w-36px h-36px sm:w-46px sm:h-46px')}
+            />
+          </div>
         </div>
       </CSSTransition>
     ) : null;
@@ -138,7 +142,7 @@ export function Lightbox<T>(props: Props<T>) {
       onClick={props.onClose}
       className="absolute z-20 right-10px top-10px flex justify-center items-center bg-black bg-opacity-30 rounded-full cursor-pointer"
     >
-      <CloseIcon className="fill-white w-12 h-12 mr-2px sm:w-14 sm:h-14" />
+      <CloseIcon className="fill-white w-10 h-10 mr-2px sm:w-12 sm:h-12" />
     </div>
   );
 
