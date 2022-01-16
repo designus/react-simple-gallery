@@ -1,8 +1,11 @@
-import React, { FC, MouseEvent, useState, useEffect, useRef } from 'react';
+import React, { MouseEvent, useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { GalleryImage } from '../gallery';
+import CloseIcon from './close-icon.svg?component';
+import LeftIcon from './left-icon.svg?component';
+import RightIcon from './right-icon.svg?component';
 
 import './lightbox.css';
   
@@ -77,45 +80,48 @@ export function Lightbox<T extends any>(props: Props<T>) {
 
   const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
 
-  const renderArrow = (className: string, newIndex: number, direction: Direction) => props.images.length > 1 ? (
-    <CSSTransition in={animateArrow[direction]} timeout={200} classNames="arrow">
-      <div
-        className={classNames(
-          'group',
-          'w-50px',
-          'sm:w-90px',
-          'flex',
-          'flex-col',
-          'justify-center',
-          'items-center',
-          'h-full',
-          'absolute',
-          'select-none',
-          'pointer',
-          'opacity-60',
-          'hover:opacity-100',
-          'hover:before:absolute',
-          'hover:before:w-full',
-          'hover:before:h-full',
-          'hover:before:-z-10',
-          'hover:before:from-black',
-          'hover:before:opacity-60',
-          'z-10',
-          className
-        )}
-      >
-        <i
-          aria-label={`${direction} arrow`}
-          onClick={() => handleMove(newIndex, direction)}
-          role="button"
-          tabIndex={0} 
-          className={classNames(`icon filled-circle-${direction}`, {
-            ['transform -translate-y-25px']: hasSomeImagesTitle
-          })}
-        />
-      </div>
-    </CSSTransition>
-  ) : null;
+  const renderArrow = (className: string, newIndex: number, direction: Direction) => {
+    const Icon = direction === 'left' ? LeftIcon : RightIcon;
+    return props.images.length > 1 ? (
+      <CSSTransition in={animateArrow[direction]} timeout={200} classNames="arrow">
+        <div
+          className={classNames(
+            'group',
+            'w-12',
+            'sm:w-24',
+            'flex',
+            'flex-col',
+            'justify-center',
+            'items-center',
+            'h-full',
+            'absolute',
+            'select-none',
+            'pointer',
+            'opacity-60',
+            'hover:opacity-100',
+            'hover:before:absolute',
+            'hover:before:w-full',
+            'hover:before:h-full',
+            'hover:before:-z-10',
+            'hover:before:from-black',
+            'hover:before:opacity-60',
+            'z-10',
+            className
+          )}
+        >
+          <Icon
+            aria-label={`${direction} arrow`}
+            onClick={() => handleMove(newIndex, direction)}
+            role="button"
+            tabIndex={0} 
+            className={classNames('fill-white w-16 h-16 outline-none', {
+              'transform -translate-y-25px': hasSomeImagesTitle
+            })}
+          />
+        </div>
+      </CSSTransition>
+    ) : null;
+  }
 
   const renderArrows = () => (
     <div className="text-white h-full relative w-full text-5xl sm:text-6xl flex flex-col justify-center select-none">
@@ -132,16 +138,7 @@ export function Lightbox<T extends any>(props: Props<T>) {
       onClick={props.onClose}
       className="absolute z-20 right-10px top-10px flex justify-center items-center bg-black bg-opacity-30 rounded-full cursor-pointer"
     >
-      <i
-        className={`
-          icon close
-          text-white
-          text-4xl
-          sm:text-5xl
-          select-none
-          mr-2px
-        `}
-      />
+      <CloseIcon className="fill-white w-12 h-12 mr-2px sm:w-14 sm:h-14" />
     </div>
   );
 
@@ -183,12 +180,7 @@ export function Lightbox<T extends any>(props: Props<T>) {
                 }
               }}
             >
-              <div className="image-wrapper absolute top-0 left-0 right-0 bottom-0 w-full m-auto flex flex-col justify-center">
-                {/* <GatsbyImage
-                  image={image.full}
-                  alt={image.alt || ''}
-                  objectFit="contain"
-                /> */}
+              <div className="image-wrapper absolute top-0 left-0 right-0 bottom-0 w-full m-auto flex flex-col justify-center items-center">
                 {renderFullImage(image)}
                 {hasSomeImagesTitle && (
                   <div className="text-white text-center p-5px select-none min-h-50px flex flex-col justify-center text-base">
