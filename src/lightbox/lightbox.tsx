@@ -87,7 +87,7 @@ export function Lightbox<T>(props: Props<T>) {
         <div
           className={classNames(
             'group',
-            'w-12',
+            'w-14',
             'sm:w-24',
             'flex',
             'flex-col',
@@ -114,7 +114,7 @@ export function Lightbox<T>(props: Props<T>) {
             onClick={() => handleMove(newIndex, direction)}
             role="button"
             tabIndex={0} 
-            className={classNames('fill-white w-16 h-16 outline-none', {
+            className={classNames('fill-white w-12 h-12 sm:w-16 sm:h-16 outline-none', {
               'transform -translate-y-25px': hasSomeImagesTitle
             })}
           />
