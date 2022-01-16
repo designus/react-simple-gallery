@@ -19,7 +19,7 @@ interface Props<T> {
 
 type Direction = 'left' | 'right';
   
-export function Lightbox<T extends any>(props: Props<T>) {
+export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
   const containerRef = useRef<null | HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
