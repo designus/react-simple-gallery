@@ -49,6 +49,20 @@ export function Lightbox<T>(props: Props<T>) {
     setActiveIndex(props.activeIndex ?? 0);
   }, [props.activeIndex]);
 
+  const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
+
+  const getAnimationClassName = () => {
+    if (animation === 'slide') {
+      return `slide-${animateArrow.left ? 'left' : 'right'}`;
+    }
+    
+    if (animation === 'fade') {
+      return 'fade';
+    }
+
+    return '';
+  };
+
   const handleMove = (newIndex: number, direction: Direction) => {
     setAnimateArrow({
       left: direction === 'left',
@@ -78,7 +92,13 @@ export function Lightbox<T>(props: Props<T>) {
     }
   };
 
-  const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
+  const handleOnEnter = (item: HTMLElement) => {
+    if (isReversed) {
+      item.parentElement?.classList.add('reversed');
+    } else {
+      item.parentElement?.classList.remove('reversed');
+    }
+  }
 
   const renderArrow = (className: string, newIndex: number, direction: Direction) => {
     const Icon = direction === 'left' ? Left : Right;
@@ -114,13 +134,25 @@ export function Lightbox<T>(props: Props<T>) {
             onClick={() => handleMove(newIndex, direction)}
             role="button"
             tabIndex={0}
-            className={classNames('rounded-full bg-white bg-opacity-70 w-46px h-46px sm:w-56px sm:h-56px relative hover:bg-opacity-100 flex justify-center items-center', {
-              'transform -translate-y-25px': hasSomeImagesTitle
-            })}
+            className={classNames(
+              'rounded-full',
+              'bg-white',
+              'bg-opacity-70',
+              'w-46px',
+              'h-46px',
+              'sm:w-56px',
+              'sm:h-56px',
+              'relative',
+              'hover:bg-opacity-100',
+              'flex',
+              'justify-center',
+              'items-center',
+              {
+                'transform -translate-y-25px': hasSomeImagesTitle
+              }
+            )}
           >
-            <Icon
-              className={classNames('fill-gray-700 w-36px h-36px sm:w-46px sm:h-46px')}
-            />
+            <Icon className={classNames('fill-gray-700 w-36px h-36px sm:w-46px sm:h-46px')} />
           </div>
         </div>
       </CSSTransition>
@@ -146,24 +178,39 @@ export function Lightbox<T>(props: Props<T>) {
     </div>
   );
 
-  const getAnimationClassName = () => {
-    if (animation === 'slide') {
-      return `slide-${animateArrow.left ? 'left' : 'right'}`;
-    }
-    
-    if (animation === 'fade') {
-      return 'fade';
-    }
-
-    return '';
-  };
+  const renderImageTitle = (image: GalleryImage<T>) => hasSomeImagesTitle && (
+    <div className="text-white text-center p-5px select-none min-h-50px flex flex-col justify-center text-base">
+      {image.title}
+    </div>
+  )
 
   const renderModal = () => (
     <div
       role="dialog"
       tabIndex={-1}
       aria-label="Image modal"
-      className="lightbox-container"
+      className={`
+        fixed
+        top-0
+        bottom-0
+        left-0
+        right-0
+        h-screen
+        z-50
+        flex
+        justify-center
+        items-center
+        flex-col
+        before:absolute
+        before:top-0
+        before:bottom-0
+        before:left-0
+        before:right-0
+        before:h-screen
+        before:-z-10
+        before:bg-black
+        before:bg-opacity-90
+      `}
       onKeyDown={handleKeyDown}
       onMouseDown={handleClose}
       ref={containerRef}
@@ -176,21 +223,11 @@ export function Lightbox<T>(props: Props<T>) {
               key={index}
               timeout={500}
               classNames={getAnimationClassName()}
-              onEnter={(item: HTMLElement) => {
-                if (isReversed) {
-                  item.parentElement?.classList.add('reversed');
-                } else {
-                  item.parentElement?.classList.remove('reversed');
-                }
-              }}
+              onEnter={handleOnEnter}
             >
               <div className="image-wrapper absolute top-0 left-0 right-0 bottom-0 w-full m-auto flex flex-col justify-center items-center">
                 {renderFullImage(image)}
-                {hasSomeImagesTitle && (
-                  <div className="text-white text-center p-5px select-none min-h-50px flex flex-col justify-center text-base">
-                    {image.title}
-                  </div>
-                )}
+                {renderImageTitle(image)}
               </div>
             </CSSTransition>
           ))}
