@@ -32,8 +32,8 @@ export function Lightbox<T>(props: Props<T>) {
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
-
   const isReversed = animateArrow.left && activeIndex === props.images.length - 1;
+  const transitionTimeout = animation === 'slide' ? 500 : 300;
 
   useEffect(() => {
     if (containerRef.current) {
@@ -182,7 +182,7 @@ export function Lightbox<T>(props: Props<T>) {
     <div className="text-white text-center p-5px select-none min-h-50px flex flex-col justify-center text-base">
       {image.title}
     </div>
-  )
+  );
 
   const renderModal = () => (
     <div
@@ -221,11 +221,11 @@ export function Lightbox<T>(props: Props<T>) {
           {props.images.map((image, index) => index === activeIndex && (
             <CSSTransition
               key={index}
-              timeout={500}
+              timeout={transitionTimeout}
               classNames={getAnimationClassName()}
               onEnter={handleOnEnter}
             >
-              <div className="image-wrapper absolute top-0 left-0 right-0 bottom-0 w-full m-auto flex flex-col justify-center items-center">
+              <div style={{}} className="absolute top-0 left-0 right-0 bottom-0 w-full m-auto flex flex-col justify-center items-center">
                 {renderFullImage(image)}
                 {renderImageTitle(image)}
               </div>
