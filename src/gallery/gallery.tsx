@@ -3,26 +3,47 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Lightbox } from '../lightbox';
+import { GalleryImage, ImageSource, RenderImage } from './types';
 
 import './gallery.css';
 
-export interface GalleryImage<T> {
-  full: T;
-  thumb: T;
-  alt?: string;
-  title?: string;
-  caption?: string;
+const defaultRenderThumbImage = (image: GalleryImage<ImageSource>) => {
+  if (typeof image.thumb !== 'string') {
+    throw new Error('Please specify renderThumbImage parameter')
+  }
+
+  return (
+    <img src={image.thumb} alt={image.alt || ''} />
+  )
 }
 
-interface Props<T> {
+const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
+  if (typeof image.full !== 'string') {
+    throw new Error('Please specify renderFullImage parameter')
+  }
+
+  return (
+    <div className="max-w-screen-2xl">
+      <img src={image.full} alt={image.alt || ''} />
+    </div>
+  );
+}
+
+export interface Props<T extends ImageSource> {
   images: GalleryImage<T>[];
   className?: string;
-  renderThumbImage: (image: GalleryImage<T>) => JSX.Element;
-  renderFullImage: (image: GalleryImage<T>) => JSX.Element;
+  renderThumbImage?: RenderImage<T>;
+  renderFullImage?: RenderImage<T>;
 }
 
-export function Gallery<T>(props: Props<T>) {
-  const { images = [], className = '', renderThumbImage, renderFullImage } = props;
+export function Gallery<T extends ImageSource>(props: Props<T>) {
+  const {
+    images = [],
+    className = '',
+    renderThumbImage = defaultRenderThumbImage,
+    renderFullImage = defaultRenderFullImage
+  } = props;
+
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -31,11 +52,14 @@ export function Gallery<T>(props: Props<T>) {
     setActiveIndex(0);
   };
 
+  const defaultClassName = 'gallery-wrapper grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4';
+
   return (
     <React.Fragment>
-      <div role="list" className={classNames(className, {
-        'gallery-wrapper grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4': !className
-      })}>
+      <div
+        role="list"
+        className={classNames(className, { [defaultClassName]: !className })}
+      >
         {images.map((image, index) => {
           return (
             <div
