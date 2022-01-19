@@ -1,5 +1,6 @@
 import './App.css'
-import { Gallery, GalleryImage } from './gallery';
+import { Gallery } from './gallery';
+import { GalleryImage } from './types';
 import image1 from '../static/sampleImages/kiemas1.jpg';
 import image2 from '../static/sampleImages/kiemas2.jpg'
 
@@ -27,8 +28,8 @@ function App() {
         <h2>Custom gallery</h2>
         <Gallery
           images={images}
-          renderThumbImage={image => <img src={image.thumb.url} />}
-          renderFullImage={image => <img src={image.full.url} />}
+          // renderThumbImage={image => <img src={image.thumb.url} />}
+          // renderFullImage={image => <img src={image.full.url} />}
         />
       </>
     )
