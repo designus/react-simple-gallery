@@ -63,7 +63,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
         {images.map((image, index) => {
           return (
             <div
-              className="cursor-pointer"
+              className="gallery-item cursor-pointer"
               role="listitem"
               key={index}
               onClick={() => {
