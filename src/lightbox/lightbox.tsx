@@ -2,7 +2,7 @@ import React, { MouseEvent, useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { GalleryImage } from '../gallery';
+import { GalleryImage } from '../types';
 import CloseIcon from './close-icon.svg?component';
 import Left from './left-icon.svg?component';
 import Right from './right-icon.svg?component';
