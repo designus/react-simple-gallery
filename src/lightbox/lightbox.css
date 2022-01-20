@@ -1,0 +1,83 @@
+.arrow-enter {
+  transform: scale(1);
+}
+.arrow-enter-active {
+  transform: scale(1.1);
+  opacity: 1;
+  transition: transform 200ms linear;
+}
+.arrow-exit {
+  opacity: 1;
+  transform: scale(1.1);
+}
+.arrow-exit-active {
+  transform: scale(1);
+  transition: transform 200ms linear;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms linear;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms linear;
+}
+
+.slide-left-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.slide-left-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: all 500ms linear;
+}
+
+.slide-left-exit {
+  transform: translateX(0);
+}
+
+.slide-left-exit-active {
+  transform: translateX(100%);
+  opacity: 0;
+  transition: all 500ms linear;
+}
+
+.slide-right-enter {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.slide-right-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 500ms linear;
+}
+
+.slide-right-exit {
+  transform: translateX(0);
+}
+
+.slide-right-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: all 500ms linear;
+}
+
+.reversed .slide-right-exit-active,
+.slide-left-enter ~ .slide-right-exit-active {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 500ms linear;
+}
