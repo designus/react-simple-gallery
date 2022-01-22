@@ -6,6 +6,7 @@ module.exports = {
   corePlugins: {
     preflight: false,
   },
+  prefix: 'sg-',
   theme: {
     screens: {
       'xs': '480px',

@@ -23,7 +23,7 @@ const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
   }
 
   return (
-    <div className="max-w-screen-2xl">
+    <div className="sg-max-w-screen-2xl">
       <img src={image.full} alt={image.alt || ''} />
     </div>
   );
@@ -52,7 +52,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
     setActiveIndex(0);
   };
 
-  const defaultClassName = 'gallery-wrapper grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4';
+  const defaultClassName = 'gallery-wrapper sg-grid sg-gap-2 sg-grid-cols-2 sm:sg-grid-cols-3 md:sg-grid-cols-4';
 
   return (
     <>
@@ -63,7 +63,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
         {images.map((image, index) => {
           return (
             <div
-              className="gallery-item cursor-pointer"
+              className="gallery-item sg-cursor-pointer"
               role="listitem"
               key={index}
               onClick={() => {

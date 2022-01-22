@@ -106,26 +106,26 @@ export function Lightbox<T>(props: Props<T>) {
       <CSSTransition in={animateArrow[direction]} timeout={200} classNames="arrow">
         <div
           className={classNames(
-            'group',
-            'w-14',
-            'sm:w-24',
-            'flex',
-            'flex-col',
-            'justify-center',
-            'items-center',
-            'h-full',
-            'absolute',
-            'select-none',
-            'pointer',
-            'opacity-60',
-            'hover:opacity-100',
-            'hover:before:absolute',
-            'hover:before:w-full',
-            'hover:before:h-full',
-            'hover:before:-z-10',
-            'hover:before:from-black',
-            'hover:before:opacity-60',
-            'z-10',
+            'sg-group',
+            'sg-w-14',
+            'sm:sg-w-24',
+            'sg-flex',
+            'sg-flex-col',
+            'sg-justify-center',
+            'sg-items-center',
+            'sg-h-full',
+            'sg-absolute',
+            'sg-sg-select-none',
+            'sg-pointer',
+            'sg-opacity-60',
+            'hover:sg-opacity-100',
+            'hover:before:sg-absolute',
+            'hover:before:sg-w-full',
+            'hover:before:sg-h-full',
+            'hover:before:-sg-z-10',
+            'hover:before:sg-from-black',
+            'hover:before:sg-opacity-60',
+            'sg-z-10',
             className
           )}
         >
@@ -135,24 +135,24 @@ export function Lightbox<T>(props: Props<T>) {
             role="button"
             tabIndex={0}
             className={classNames(
-              'rounded-full',
-              'bg-white',
-              'bg-opacity-70',
-              'w-46px',
-              'h-46px',
-              'sm:w-56px',
-              'sm:h-56px',
-              'relative',
-              'hover:bg-opacity-100',
-              'flex',
-              'justify-center',
-              'items-center',
+              'sg-rounded-full',
+              'sg-bg-white',
+              'sg-bg-opacity-70',
+              'sg-w-46px',
+              'sg-h-46px',
+              'sg-sm:w-56px',
+              'sg-sm:h-56px',
+              'sg-relative',
+              'sg-hover:bg-opacity-100',
+              'sg-flex',
+              'sg-justify-center',
+              'sg-items-center',
               {
-                'transform -translate-y-25px': hasSomeImagesTitle
+                'sg-transform -sg-translate-y-25px': hasSomeImagesTitle
               }
             )}
           >
-            <Icon className={classNames('fill-gray-700 w-36px h-36px sm:w-46px sm:h-46px')} />
+            <Icon className={classNames('sg-fill-gray-700 sg-w-36px sg-h-36px sm:sg-w-46px sm:sg-h-46px')} />
           </div>
         </div>
       </CSSTransition>
@@ -160,9 +160,9 @@ export function Lightbox<T>(props: Props<T>) {
   }
 
   const renderArrows = () => (
-    <div className="text-white h-full relative w-full text-5xl sm:text-6xl flex flex-col justify-center select-none">
-      {renderArrow('left-0 hover:before:bg-gradient-to-r', prevIndex, 'left')}
-      {renderArrow('right-0 hover:before:bg-gradient-to-l', nextIndex, 'right')}
+    <div className="sg-text-white sg-h-full sg-relative sg-w-full sg-text-5xl sm:sg-text-6xl sg-flex sg-flex-col sg-justify-center sg-select-none">
+      {renderArrow('sg-left-0 hover:before:sg-bg-gradient-to-r', prevIndex, 'left')}
+      {renderArrow('sg-right-0 hover:before:sg-bg-gradient-to-l', nextIndex, 'right')}
     </div>
   );
 
@@ -172,14 +172,14 @@ export function Lightbox<T>(props: Props<T>) {
       tabIndex={0}
       aria-label="Close image button"
       onClick={props.onClose}
-      className="absolute z-20 right-10px top-10px flex justify-center items-center bg-black bg-opacity-30 rounded-full cursor-pointer"
+      className="sg-absolute sg-z-20 sg-right-10px sg-top-10px sg-flex sg-justify-center sg-items-center sg-bg-black sg-bg-opacity-30 sg-rounded-full sg-cursor-pointer"
     >
-      <CloseIcon className="fill-white w-10 h-10 mr-2px sm:w-12 sm:h-12" />
+      <CloseIcon className="sg-fill-white sg-w-10 sg-h-10 sg-mr-2px sm:sg-w-12 sm:sg-h-12" />
     </div>
   );
 
   const renderImageTitle = (image: GalleryImage<T>) => hasSomeImagesTitle && (
-    <div className="text-white text-center p-5px select-none min-h-50px flex flex-col justify-center text-base">
+    <div className="sg-text-white sg-text-center sg-p-5px sg-select-none sg-min-h-50px sg-flex sg-flex-col sg-justify-center sg-text-base">
       {image.title}
     </div>
   );
@@ -190,32 +190,32 @@ export function Lightbox<T>(props: Props<T>) {
       tabIndex={-1}
       aria-label="Image modal"
       className={`
-        fixed
-        top-0
-        bottom-0
-        left-0
-        right-0
-        h-screen
-        z-50
-        flex
-        justify-center
-        items-center
-        flex-col
-        before:absolute
-        before:top-0
-        before:bottom-0
-        before:left-0
-        before:right-0
-        before:h-screen
-        before:-z-10
-        before:bg-black
-        before:bg-opacity-90
+        sg-fixed
+        sg-top-0
+        sg-bottom-0
+        sg-left-0
+        sg-right-0
+        sg-h-screen
+        sg-z-50
+        sg-flex
+        sg-justify-center
+        sg-items-center
+        sg-flex-col
+        before:sg-absolute
+        before:sg-top-0
+        before:sg-bottom-0
+        before:sg-left-0
+        before:sg-right-0
+        before:sg-h-screen
+        before:-sg-z-10
+        before:sg-bg-black
+        before:sg-bg-opacity-90
       `}
       onKeyDown={handleKeyDown}
       onMouseDown={handleClose}
       ref={containerRef}
     >
-      <div className="w-full h-full relative">
+      <div className="sg-w-full sg-h-full sg-relative">
         {renderClose()}
         <TransitionGroup>
           {props.images.map((image, index) => index === activeIndex && (
@@ -225,7 +225,7 @@ export function Lightbox<T>(props: Props<T>) {
               classNames={getAnimationClassName()}
               onEnter={handleOnEnter}
             >
-              <div style={{}} className="absolute top-0 left-0 right-0 bottom-0 w-full m-auto flex flex-col justify-center items-center">
+              <div style={{}} className="sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center">
                 {renderFullImage(image)}
                 {renderImageTitle(image)}
               </div>
