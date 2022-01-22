@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Lightbox } from '../lightbox';
-import { GalleryImage, ImageSource, RenderImage } from '../types';
+import { GalleryImage, ImageSource, RenderImage, TransitionAnimation } from '../types';
 
 import './imageList.css';
 
@@ -32,6 +32,7 @@ const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
 export interface Props<T extends ImageSource> {
   images: GalleryImage<T>[];
   className?: string;
+  animation?: TransitionAnimation;
   renderThumbImage?: RenderImage<T>;
   renderFullImage?: RenderImage<T>;
 }
@@ -40,6 +41,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
   const {
     images = [],
     className = '',
+    animation = 'slide',
     renderThumbImage = defaultRenderThumbImage,
     renderFullImage = defaultRenderFullImage
   } = props;
@@ -80,6 +82,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
         <Lightbox
           onClose={handleLightboxClose}
           images={images}
+          animation={animation}
           activeIndex={activeIndex}
           renderFullImage={renderFullImage}
         />

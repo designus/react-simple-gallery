@@ -7,7 +7,10 @@ function App() {
     return (
       <>
         <h1>Custom gallery</h1>
-        <Gallery images={images} />
+        <Gallery
+          animation="fade" 
+          images={images}
+        />
       </>
     )
   }
