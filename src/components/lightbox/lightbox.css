@@ -73,7 +73,6 @@
   transition: all 500ms linear;
 }
 
-.sg-reversed .sg-slide-right-exit-active,
 .sg-slide-left-enter ~ .sg-slide-right-exit-active {
   opacity: 0;
   transform: translateX(100%);

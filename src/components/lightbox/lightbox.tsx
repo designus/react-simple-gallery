@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState, useEffect, useRef } from 'react';
+import React, { MouseEvent, useState, useEffect, useRef, MutableRefObject } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -28,6 +28,8 @@ const transitionTimeoutLookup: Record<TransitionAnimation, number> = {
 export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
   const containerRef = useRef<null | HTMLDivElement>(null);
+  const arrowRef = useRef<null | HTMLDivElement>(null);
+  const imageRefs: MutableRefObject<null | HTMLDivElement>[] = [];
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const initialAnimateArrow = useRef<Record<Direction, boolean>>({
     left: false,
@@ -38,7 +40,6 @@ export function Lightbox<T>(props: Props<T>) {
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
-  const isReversed = animateArrow.left && activeIndex === props.images.length - 1;
 
   useEffect(() => {
     if (containerRef.current) {
@@ -97,19 +98,17 @@ export function Lightbox<T>(props: Props<T>) {
     }
   };
 
-  const handleOnEnter = (item: HTMLElement) => {
-    if (isReversed) {
-      item.parentElement?.classList.add('sg-reversed');
-    } else {
-      item.parentElement?.classList.remove('sg-reversed');
-    }
-  }
-
   const renderArrow = (className: string, newIndex: number, direction: Direction) => {
     const Icon = direction === 'left' ? Left : Right;
     return props.images.length > 1 ? (
-      <CSSTransition in={animateArrow[direction]} timeout={200} classNames="sg-arrow">
+      <CSSTransition
+        nodeRef={arrowRef}
+        in={animateArrow[direction]}
+        timeout={200}
+        classNames="sg-arrow"
+      >
         <div
+          ref={arrowRef}
           className={classNames(
             'sg-group',
             'sg-w-14',
@@ -273,31 +272,37 @@ export function Lightbox<T>(props: Props<T>) {
       <div className="sg-w-full sg-h-full sg-relative">
         {renderClose()}
         <TransitionGroup>
-          {props.images.map((image, index) => index === activeIndex && (
-            <CSSTransition
-              key={index}
-              timeout={transitionTimeoutLookup[animation]}
-              classNames={getAnimationClassName()}
-              onEnter={handleOnEnter}
-            >
-              <div className={`
-                sg-absolute
-                sg-top-0
-                sg-left-0
-                sg-right-0
-                sg-bottom-0
-                sg-w-full
-                sg-m-auto
-                sg-flex
-                sg-flex-col
-                sg-justify-center
-                sg-items-center
-              `}>
-                {renderFullImage(image)}
-                {renderImageTitle(image)}
-              </div>
-            </CSSTransition>
-          ))}
+          {props.images.map((image, index) => {
+            imageRefs[index] = useRef(null);
+            return index === activeIndex && (
+              <CSSTransition
+                key={index}
+                nodeRef={imageRefs[index]}
+                timeout={transitionTimeoutLookup[animation]}
+                classNames={getAnimationClassName()}
+              >
+                <div
+                  ref={imageRefs[index]}
+                  className={`
+                    sg-absolute
+                    sg-top-0
+                    sg-left-0
+                    sg-right-0
+                    sg-bottom-0
+                    sg-w-full
+                    sg-m-auto
+                    sg-flex
+                    sg-flex-col
+                    sg-justify-center
+                    sg-items-center
+                  `}
+                >
+                  {renderFullImage(image)}
+                  {renderImageTitle(image)}
+                </div>
+              </CSSTransition>
+            )
+          })}
         </TransitionGroup>
         {renderArrows()}
       </div>

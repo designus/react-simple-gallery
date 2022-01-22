@@ -3,12 +3,11 @@ import { Gallery } from './components/gallery';
 
 function App() {
   const renderGallery1 = () => {
-    const images = ['/image1.jpg', '/image2.jpg', './image3.jpg', './image4.jpg'].map(photo => ({ full: photo, thumb: photo }))
+    const images = ['./1.jpg', './2.jpg', './3.jpg', './4.jpg', './5.jpg', './6.jpg'].map(photo => ({ full: photo, thumb: photo }))
     return (
       <>
         <h1>Custom gallery</h1>
         <Gallery
-          animation="fade" 
           images={images}
         />
       </>
