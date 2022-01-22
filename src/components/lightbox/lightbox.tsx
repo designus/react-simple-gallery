@@ -18,6 +18,12 @@ interface Props<T> {
 }
 
 type Direction = 'left' | 'right';
+
+const transitionTimeoutLookup: Record<TransitionAnimation, number> = {
+  fade: 300,
+  slide: 500,
+  none: 0
+}
   
 export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
@@ -33,7 +39,6 @@ export function Lightbox<T>(props: Props<T>) {
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
   const isReversed = animateArrow.left && activeIndex === props.images.length - 1;
-  const transitionTimeout = animation === 'slide' ? 500 : 300;
 
   useEffect(() => {
     if (containerRef.current) {
@@ -271,7 +276,7 @@ export function Lightbox<T>(props: Props<T>) {
           {props.images.map((image, index) => index === activeIndex && (
             <CSSTransition
               key={index}
-              timeout={transitionTimeout}
+              timeout={transitionTimeoutLookup[animation]}
               classNames={getAnimationClassName()}
               onEnter={handleOnEnter}
             >
