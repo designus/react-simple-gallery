@@ -7,16 +7,21 @@ import * as path from 'path';
 export default defineConfig({
   plugins: [
     svgr(),
-    react(),
+    react()
   ],
   build: {
     lib: {
-      entry: path.resolve(__dirname, 'src/main.tsx'),
+      entry: path.resolve(__dirname, 'src/components/index.ts'),
       name: 'ReactSimpleGallery',
       fileName: (format) => `react-simple-gallery.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: [
+        'react',
+        'react-dom',
+        path.resolve(__dirname, 'src/App.tsx'),
+        path.resolve(__dirname, 'src/main.tsx')
+      ],
       output: {
         globals: {
           react: 'React',

@@ -19,5 +19,5 @@
     "jsx": "react-jsx",
     "types": ["@honkhonk/vite-plugin-svgr/client"]
   },
-  "include": ["./src"]
+  "include": ["./src/components"],
 }

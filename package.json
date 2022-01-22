@@ -21,8 +21,10 @@
     ".": {
       "import": "./dist/react-simple-gallery.es.js",
       "require": "./dist/react-simple-gallery.umd.js"
-    }
+    },
+    "./dist/style.css": "./dist/style.css"
   },
+  "sideEffects": false,
   "author": "Martynas Viskontas",
   "license": "MIT",
   "bugs": {
@@ -36,8 +38,6 @@
   },
   "dependencies": {
     "classnames": "^2.3.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
     "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
@@ -45,6 +45,8 @@
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
     "@honkhonk/vite-plugin-svgr": "^1.1.0",
     "@rollup/plugin-typescript": "^8.3.0",
     "@types/node": "^17.0.10",

@@ -1,0 +1,22 @@
+
+import { Gallery } from './components/gallery';
+
+function App() {
+  const renderGallery1 = () => {
+    const images = ['/image1.jpg', '/image2.jpg'].map(photo => ({ full: photo, thumb: photo }))
+    return (
+      <>
+        <h1>Custom gallery</h1>
+        <Gallery images={images} />
+      </>
+    )
+  }
+
+  return (
+    <div className="test">
+      {renderGallery1()}
+    </div>
+  )
+}
+
+export default App

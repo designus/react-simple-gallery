@@ -1,0 +1,21 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+:before,
+:after {
+	--tw-content: "";
+}
+
+button,
+[role=button] {
+	cursor: pointer;
+}
+
+img {
+	display: block;
+	vertical-align: middle;
+  max-width: 100%;
+	height: auto;
+}
+
