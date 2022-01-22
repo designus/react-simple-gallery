@@ -7,15 +7,12 @@
 	--tw-content: "";
 }
 
-button,
-[role=button] {
-	cursor: pointer;
+.sg-gallery,
+.sg-modal {
+  img {
+    display: block;
+    vertical-align: middle;
+    max-width: 100%;
+    height: auto;
+  }
 }
-
-img {
-	display: block;
-	vertical-align: middle;
-  max-width: 100%;
-	height: auto;
-}
-

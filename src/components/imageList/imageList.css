@@ -1,4 +1,4 @@
-.gallery-wrapper {
+.sg-gallery-wrapper {
   @media (max-width: 340px) {
     grid-template-columns: repeat(1, minmax(0, 1fr))
   }

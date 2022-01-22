@@ -53,11 +53,11 @@ export function Lightbox<T>(props: Props<T>) {
 
   const getAnimationClassName = () => {
     if (animation === 'slide') {
-      return `slide-${animateArrow.left ? 'left' : 'right'}`;
+      return `sg-slide-${animateArrow.left ? 'left' : 'right'}`;
     }
     
     if (animation === 'fade') {
-      return 'fade';
+      return 'sg-fade';
     }
 
     return '';
@@ -94,16 +94,16 @@ export function Lightbox<T>(props: Props<T>) {
 
   const handleOnEnter = (item: HTMLElement) => {
     if (isReversed) {
-      item.parentElement?.classList.add('reversed');
+      item.parentElement?.classList.add('sg-reversed');
     } else {
-      item.parentElement?.classList.remove('reversed');
+      item.parentElement?.classList.remove('sg-reversed');
     }
   }
 
   const renderArrow = (className: string, newIndex: number, direction: Direction) => {
     const Icon = direction === 'left' ? Left : Right;
     return props.images.length > 1 ? (
-      <CSSTransition in={animateArrow[direction]} timeout={200} classNames="arrow">
+      <CSSTransition in={animateArrow[direction]} timeout={200} classNames="sg-arrow">
         <div
           className={classNames(
             'sg-group',
@@ -115,9 +115,10 @@ export function Lightbox<T>(props: Props<T>) {
             'sg-items-center',
             'sg-h-full',
             'sg-absolute',
-            'sg-sg-select-none',
+            'sg-select-none',
             'sg-pointer',
             'sg-opacity-60',
+            'sg-cursor-pointer',
             'hover:sg-opacity-100',
             'hover:before:sg-absolute',
             'hover:before:sg-w-full',
@@ -152,7 +153,14 @@ export function Lightbox<T>(props: Props<T>) {
               }
             )}
           >
-            <Icon className={classNames('sg-fill-gray-700 sg-w-36px sg-h-36px sm:sg-w-46px sm:sg-h-46px')} />
+            <Icon className={`
+              sg-fill-gray-700
+              sg-w-36px
+              sg-h-36px
+              sm:sg-w-46px
+              sm:sg-h-46px
+            `}
+            />
           </div>
         </div>
       </CSSTransition>
@@ -160,7 +168,18 @@ export function Lightbox<T>(props: Props<T>) {
   }
 
   const renderArrows = () => (
-    <div className="sg-text-white sg-h-full sg-relative sg-w-full sg-text-5xl sm:sg-text-6xl sg-flex sg-flex-col sg-justify-center sg-select-none">
+    <div className={`
+      sg-text-white
+      sg-h-full
+      sg-relative
+      sg-w-full
+      sg-text-5xl
+      sm:sg-text-6xl
+      sg-flex
+      sg-flex-col
+      sg-justify-center
+      sg-select-none
+    `}>
       {renderArrow('sg-left-0 hover:before:sg-bg-gradient-to-r', prevIndex, 'left')}
       {renderArrow('sg-right-0 hover:before:sg-bg-gradient-to-l', nextIndex, 'right')}
     </div>
@@ -172,14 +191,44 @@ export function Lightbox<T>(props: Props<T>) {
       tabIndex={0}
       aria-label="Close image button"
       onClick={props.onClose}
-      className="sg-absolute sg-z-20 sg-right-10px sg-top-10px sg-flex sg-justify-center sg-items-center sg-bg-black sg-bg-opacity-30 sg-rounded-full sg-cursor-pointer"
+      className={`
+        sg-absolute
+        sg-z-20
+        sg-right-10px
+        sg-top-10px
+        sg-flex
+        sg-justify-center
+        sg-items-center
+        sg-bg-black
+        sg-bg-opacity-30
+        sg-rounded-full
+        sg-cursor-pointer
+      `}
     >
-      <CloseIcon className="sg-fill-white sg-w-10 sg-h-10 sg-mr-2px sm:sg-w-12 sm:sg-h-12" />
+      <CloseIcon className={`
+        sg-fill-white
+        sg-w-10
+        sg-h-10
+        sg-mr-2px
+        sm:sg-w-12
+        sm:sg-h-12
+      `}
+      />
     </div>
   );
 
   const renderImageTitle = (image: GalleryImage<T>) => hasSomeImagesTitle && (
-    <div className="sg-text-white sg-text-center sg-p-5px sg-select-none sg-min-h-50px sg-flex sg-flex-col sg-justify-center sg-text-base">
+    <div className={`
+      sg-text-white
+      sg-text-center
+      sg-p-5px
+      sg-select-none
+      sg-min-h-50px
+      sg-flex
+      sg-flex-col
+      sg-justify-center
+      sg-text-base
+    `}>
       {image.title}
     </div>
   );
@@ -190,6 +239,7 @@ export function Lightbox<T>(props: Props<T>) {
       tabIndex={-1}
       aria-label="Image modal"
       className={`
+        sg-modal
         sg-fixed
         sg-top-0
         sg-bottom-0
@@ -225,7 +275,19 @@ export function Lightbox<T>(props: Props<T>) {
               classNames={getAnimationClassName()}
               onEnter={handleOnEnter}
             >
-              <div style={{}} className="sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center">
+              <div className={`
+                sg-absolute
+                sg-top-0
+                sg-left-0
+                sg-right-0
+                sg-bottom-0
+                sg-w-full
+                sg-m-auto
+                sg-flex
+                sg-flex-col
+                sg-justify-center
+                sg-items-center
+              `}>
                 {renderFullImage(image)}
                 {renderImageTitle(image)}
               </div>

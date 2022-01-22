@@ -52,18 +52,18 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
     setActiveIndex(0);
   };
 
-  const defaultClassName = 'gallery-wrapper sg-grid sg-gap-2 sg-grid-cols-2 sm:sg-grid-cols-3 md:sg-grid-cols-4';
+  const layoutClasses = 'sg-grid sg-gap-2 sg-grid-cols-2 sm:sg-grid-cols-3 md:sg-grid-cols-4';
 
   return (
     <>
       <div
         role="list"
-        className={classNames(className, { [defaultClassName]: !className })}
+        className={classNames('sg-gallery', className, { [layoutClasses]: !className })}
       >
         {images.map((image, index) => {
           return (
             <div
-              className="gallery-item sg-cursor-pointer"
+              className="sg-gallery-item sg-cursor-pointer"
               role="listitem"
               key={index}
               onClick={() => {

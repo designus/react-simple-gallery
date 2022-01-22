@@ -1,82 +1,80 @@
-.arrow-enter {
+.sg-arrow-enter {
   transform: scale(1);
 }
-.arrow-enter-active {
+.sg-arrow-enter-active {
   transform: scale(1.1);
   opacity: 1;
   transition: transform 200ms linear;
 }
-.arrow-exit {
+.sg-arrow-exit {
   opacity: 1;
   transform: scale(1.1);
 }
-.arrow-exit-active {
+.sg-arrow-exit-active {
   transform: scale(1);
   transition: transform 200ms linear;
 }
-
-.fade-enter {
+.sg-fade-enter {
   opacity: 0;
 }
-
-.fade-enter-active {
+.sg-fade-enter-active {
   opacity: 1;
   transition: opacity 300ms linear;
 }
 
-.fade-exit {
+.sg-fade-exit {
   opacity: 1;
 }
 
-.fade-exit-active {
+.sg-fade-exit-active {
   opacity: 0;
   transition: opacity 300ms linear;
 }
 
-.slide-left-enter {
+.sg-slide-left-enter {
   opacity: 0;
   transform: translateX(-100%);
 }
 
-.slide-left-enter-active {
+.sg-slide-left-enter-active {
   transform: translateX(0);
   opacity: 1;
   transition: all 500ms linear;
 }
 
-.slide-left-exit {
+.sg-slide-left-exit {
   transform: translateX(0);
 }
 
-.slide-left-exit-active {
+.sg-slide-left-exit-active {
   transform: translateX(100%);
   opacity: 0;
   transition: all 500ms linear;
 }
 
-.slide-right-enter {
+.sg-slide-right-enter {
   opacity: 0;
   transform: translateX(100%);
 }
 
-.slide-right-enter-active {
+.sg-slide-right-enter-active {
   opacity: 1;
   transform: translateX(0);
   transition: all 500ms linear;
 }
 
-.slide-right-exit {
+.sg-slide-right-exit {
   transform: translateX(0);
 }
 
-.slide-right-exit-active {
+.sg-slide-right-exit-active {
   opacity: 0;
   transform: translateX(-100%);
   transition: all 500ms linear;
 }
 
-.reversed .slide-right-exit-active,
-.slide-left-enter ~ .slide-right-exit-active {
+.sg-reversed .sg-slide-right-exit-active,
+.sg-slide-left-enter ~ .sg-slide-right-exit-active {
   opacity: 0;
   transform: translateX(100%);
   transition: all 500ms linear;
