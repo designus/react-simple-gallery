@@ -2,7 +2,7 @@ import React, { MouseEvent, useState, useEffect, useRef, MutableRefObject } from
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { GalleryImage, TransitionAnimation } from '../types';
+import { GalleryImage, TransitionAnimation, RenderImage } from '../types';
 import CloseIcon from './close-icon.svg?component';
 import Left from './left-icon.svg?component';
 import Right from './right-icon.svg?component';
@@ -14,7 +14,7 @@ interface Props<T> {
   images: GalleryImage<T>[];
   activeIndex?: number;
   animation?: TransitionAnimation;
-  renderFullImage: (image: GalleryImage<T>) => JSX.Element;
+  renderFullImage: RenderImage<T>;
 }
 
 type Direction = 'left' | 'right';
@@ -263,7 +263,6 @@ export function Lightbox<T>(props: Props<T>) {
         before:sg-h-screen
         before:-sg-z-10
         before:sg-bg-black
-        before:sg-bg-opacity-90
       `}
       onKeyDown={handleKeyDown}
       onMouseDown={handleClose}

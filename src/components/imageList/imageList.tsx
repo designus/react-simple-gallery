@@ -23,8 +23,12 @@ const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
   }
 
   return (
-    <div className="sg-max-w-screen-2xl">
-      <img src={image.full} alt={image.alt || ''} />
+    <div className="sg-max-w-screen-2xl sg-h-full">
+      <img
+        className="sg-relative sg-top-2/4 sg-transform sg--translate-y-2/4"
+        src={image.full}
+        alt={image.alt || ''}
+      />
     </div>
   );
 }
@@ -54,13 +58,13 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
     setActiveIndex(0);
   };
 
-  const layoutClasses = 'sg-grid sg-gap-2 sg-grid-cols-2 sm:sg-grid-cols-3 md:sg-grid-cols-4';
+  const defaultLayoutClasses = 'sg-gallery-list sg-auto-rows-fr sg-grid sg-gap-2 sg-grid-cols-2 sm:sg-grid-cols-3 md:sg-grid-cols-4';
 
   return (
     <>
       <div
         role="list"
-        className={classNames('sg-gallery', className, { [layoutClasses]: !className })}
+        className={classNames(className, { [defaultLayoutClasses]: !className })}
       >
         {images.map((image, index) => {
           return (
