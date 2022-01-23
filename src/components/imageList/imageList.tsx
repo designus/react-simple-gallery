@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
 import { Lightbox } from '../lightbox';
-import { GalleryImage, ImageSource, RenderImage } from '../types';
+import { GalleryImage, ImageSource, RenderImage, TransitionAnimation } from '../types';
 
 import './imageList.css';
 
@@ -23,8 +23,12 @@ const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
   }
 
   return (
-    <div className="max-w-screen-2xl">
-      <img src={image.full} alt={image.alt || ''} />
+    <div className="sg-max-w-screen-2xl sg-h-full">
+      <img
+        className="sg-relative sg-top-2/4 sg-transform sg--translate-y-2/4"
+        src={image.full}
+        alt={image.alt || ''}
+      />
     </div>
   );
 }
@@ -32,6 +36,7 @@ const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
 export interface Props<T extends ImageSource> {
   images: GalleryImage<T>[];
   className?: string;
+  animation?: TransitionAnimation;
   renderThumbImage?: RenderImage<T>;
   renderFullImage?: RenderImage<T>;
 }
@@ -40,6 +45,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
   const {
     images = [],
     className = '',
+    animation = 'slide',
     renderThumbImage = defaultRenderThumbImage,
     renderFullImage = defaultRenderFullImage
   } = props;
@@ -52,18 +58,18 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
     setActiveIndex(0);
   };
 
-  const defaultClassName = 'gallery-wrapper grid gap-2 grid-cols-2 sm:grid-cols-3 md:grid-cols-4';
+  const defaultLayoutClasses = 'sg-gallery-list sg-auto-rows-fr sg-grid sg-gap-2 sg-grid-cols-2 sm:sg-grid-cols-3 md:sg-grid-cols-4';
 
   return (
     <>
       <div
         role="list"
-        className={classNames(className, { [defaultClassName]: !className })}
+        className={classNames(className, { [defaultLayoutClasses]: !className })}
       >
         {images.map((image, index) => {
           return (
             <div
-              className="gallery-item cursor-pointer"
+              className="sg-gallery-item sg-cursor-pointer"
               role="listitem"
               key={index}
               onClick={() => {
@@ -80,6 +86,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
         <Lightbox
           onClose={handleLightboxClose}
           images={images}
+          animation={animation}
           activeIndex={activeIndex}
           renderFullImage={renderFullImage}
         />

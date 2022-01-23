@@ -3,6 +3,10 @@ module.exports = {
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
+  corePlugins: {
+    preflight: false,
+  },
+  prefix: 'sg-',
   theme: {
     screens: {
       'xs': '480px',
