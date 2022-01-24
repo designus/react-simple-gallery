@@ -27,6 +27,7 @@ const transitionTimeoutLookup: Record<TransitionAnimation, number> = {
   
 export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
+
   const containerRef = useRef<null | HTMLDivElement>(null);
   const arrowRef = useRef<null | HTMLDivElement>(null);
   const imageRefs: MutableRefObject<null | HTMLDivElement>[] = [];
@@ -35,9 +36,9 @@ export function Lightbox<T>(props: Props<T>) {
     left: false,
     right: false
   });
-
+  
   const [animateArrow, setAnimateArrow] = useState(initialAnimateArrow.current);
-
+  
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
 
@@ -143,17 +144,13 @@ export function Lightbox<T>(props: Props<T>) {
               'sg-rounded-full',
               'sg-bg-white',
               'sg-bg-opacity-70',
-              'sg-w-46px',
-              'sg-h-46px',
-              'sg-sm:w-56px',
-              'sg-sm:h-56px',
               'sg-relative',
               'sg-hover:bg-opacity-100',
               'sg-flex',
               'sg-justify-center',
               'sg-items-center',
               {
-                'sg-transform -sg-translate-y-25px': hasSomeImagesTitle
+                'sg-transform sg--translate-y-18px sm:sg--translate-y-23px': hasSomeImagesTitle
               }
             )}
           >
@@ -282,7 +279,8 @@ export function Lightbox<T>(props: Props<T>) {
               >
                 <div
                   ref={imageRefs[index]}
-                  className={`
+                  className={classNames(`
+                    sg-image-wrapper
                     sg-absolute
                     sg-top-0
                     sg-left-0
@@ -294,7 +292,9 @@ export function Lightbox<T>(props: Props<T>) {
                     sg-flex-col
                     sg-justify-center
                     sg-items-center
-                  `}
+                  `, {
+                    ['sg-has-title']: Boolean(image.title)
+                  })}
                 >
                   {renderFullImage(image)}
                   {renderImageTitle(image)}
