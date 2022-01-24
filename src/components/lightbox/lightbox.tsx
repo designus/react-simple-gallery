@@ -29,7 +29,11 @@ export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
 
   const containerRef = useRef<null | HTMLDivElement>(null);
-  const arrowRef = useRef<null | HTMLDivElement>(null);
+  const arrowRefs: Record<Direction, MutableRefObject<null | HTMLDivElement>> = {
+    left: useRef(null),
+    right: useRef(null)
+  }
+
   const imageRefs: MutableRefObject<null | HTMLDivElement>[] = [];
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const initialAnimateArrow = useRef<Record<Direction, boolean>>({
@@ -103,13 +107,13 @@ export function Lightbox<T>(props: Props<T>) {
     const Icon = direction === 'left' ? Left : Right;
     return props.images.length > 1 ? (
       <CSSTransition
-        nodeRef={arrowRef}
+        nodeRef={arrowRefs[direction]}
         in={animateArrow[direction]}
         timeout={200}
         classNames="sg-arrow"
       >
         <div
-          ref={arrowRef}
+          ref={arrowRefs[direction]}
           className={classNames(
             'sg-group',
             'sg-w-14',
