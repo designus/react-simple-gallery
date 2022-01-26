@@ -38,11 +38,15 @@ module.exports = {
         '18px': '18px',
         '19px': '19px',
         '20px': '20px',
+        '23px': '23px',
         '25px': '25px',
         '30px': '30px',
         '36px': '36px',
         '46px': '46px',
         '56px': '56px'
+      },
+      minHeight: {
+        '50px': '50px'
       },
       zIndex: {
         '-10': '-10'

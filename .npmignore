@@ -5,3 +5,5 @@ tsconfig.json
 vite.config.ts
 postcss.config.js
 libInjectCss.ts
+public
+dist/*.jpg

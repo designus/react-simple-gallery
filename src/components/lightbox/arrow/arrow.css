@@ -1,0 +1,16 @@
+.sg-arrow-enter {
+  transform: scale(1);
+}
+.sg-arrow-enter-active {
+  transform: scale(1.1);
+  opacity: 1;
+  transition: transform 200ms linear;
+}
+.sg-arrow-exit {
+  opacity: 1;
+  transform: scale(1.1);
+}
+.sg-arrow-exit-active {
+  transform: scale(1);
+  transition: transform 200ms linear;
+}

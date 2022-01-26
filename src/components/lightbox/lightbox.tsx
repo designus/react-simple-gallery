@@ -2,10 +2,9 @@ import React, { MouseEvent, useState, useEffect, useRef, MutableRefObject } from
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { GalleryImage, TransitionAnimation, RenderImage } from '../types';
+import { Arrow } from './arrow';
+import { GalleryImage, TransitionAnimation, RenderImage, Direction } from '../types';
 import CloseIcon from './close-icon.svg?component';
-import Left from './left-icon.svg?component';
-import Right from './right-icon.svg?component';
 
 import './lightbox.css';
   
@@ -17,8 +16,6 @@ interface Props<T> {
   renderFullImage: RenderImage<T>;
 }
 
-type Direction = 'left' | 'right';
-
 const transitionTimeoutLookup: Record<TransitionAnimation, number> = {
   fade: 300,
   slide: 500,
@@ -27,16 +24,10 @@ const transitionTimeoutLookup: Record<TransitionAnimation, number> = {
   
 export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
-  const containerRef = useRef<null | HTMLDivElement>(null);
-  const arrowRef = useRef<null | HTMLDivElement>(null);
-  const imageRefs: MutableRefObject<null | HTMLDivElement>[] = [];
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
-  const initialAnimateArrow = useRef<Record<Direction, boolean>>({
-    left: false,
-    right: false
-  });
-
-  const [animateArrow, setAnimateArrow] = useState(initialAnimateArrow.current);
+  const containerRef = useRef<null | HTMLDivElement>(null);
+  const imageRefs: MutableRefObject<null | HTMLDivElement>[] = [];  
+  const [direction, setDirection] = useState<Direction>('right')
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
@@ -47,9 +38,6 @@ export function Lightbox<T>(props: Props<T>) {
     }
   }, [containerRef]);
 
-  useEffect(() => {
-    setAnimateArrow(initialAnimateArrow.current);
-  }, [activeIndex]);
 
   useEffect(() => {
     setActiveIndex(props.activeIndex ?? 0);
@@ -59,7 +47,7 @@ export function Lightbox<T>(props: Props<T>) {
 
   const getAnimationClassName = () => {
     if (animation === 'slide') {
-      return `sg-slide-${animateArrow.left ? 'left' : 'right'}`;
+      return `sg-slide-${direction}`;
     }
     
     if (animation === 'fade') {
@@ -69,11 +57,8 @@ export function Lightbox<T>(props: Props<T>) {
     return '';
   };
 
-  const handleMove = (newIndex: number, direction: Direction) => {
-    setAnimateArrow({
-      left: direction === 'left',
-      right: direction === 'right'
-    });
+  const handleMove = (newIndex: number, newDirection: Direction) => {
+    setDirection(newDirection);
     setActiveIndex(newIndex);
   };
 
@@ -98,80 +83,7 @@ export function Lightbox<T>(props: Props<T>) {
     }
   };
 
-  const renderArrow = (className: string, newIndex: number, direction: Direction) => {
-    const Icon = direction === 'left' ? Left : Right;
-    return props.images.length > 1 ? (
-      <CSSTransition
-        nodeRef={arrowRef}
-        in={animateArrow[direction]}
-        timeout={200}
-        classNames="sg-arrow"
-      >
-        <div
-          ref={arrowRef}
-          className={classNames(
-            'sg-group',
-            'sg-w-14',
-            'sm:sg-w-24',
-            'sg-flex',
-            'sg-flex-col',
-            'sg-justify-center',
-            'sg-items-center',
-            'sg-h-full',
-            'sg-absolute',
-            'sg-select-none',
-            'sg-pointer',
-            'sg-opacity-60',
-            'sg-cursor-pointer',
-            'hover:sg-opacity-100',
-            'hover:before:sg-absolute',
-            'hover:before:sg-w-full',
-            'hover:before:sg-h-full',
-            'hover:before:-sg-z-10',
-            'hover:before:sg-from-black',
-            'hover:before:sg-opacity-60',
-            'sg-z-10',
-            className
-          )}
-        >
-          <div
-            aria-label={`${direction} arrow`}
-            onClick={() => handleMove(newIndex, direction)}
-            role="button"
-            tabIndex={0}
-            className={classNames(
-              'sg-rounded-full',
-              'sg-bg-white',
-              'sg-bg-opacity-70',
-              'sg-w-46px',
-              'sg-h-46px',
-              'sg-sm:w-56px',
-              'sg-sm:h-56px',
-              'sg-relative',
-              'sg-hover:bg-opacity-100',
-              'sg-flex',
-              'sg-justify-center',
-              'sg-items-center',
-              {
-                'sg-transform -sg-translate-y-25px': hasSomeImagesTitle
-              }
-            )}
-          >
-            <Icon className={`
-              sg-fill-gray-700
-              sg-w-36px
-              sg-h-36px
-              sm:sg-w-46px
-              sm:sg-h-46px
-            `}
-            />
-          </div>
-        </div>
-      </CSSTransition>
-    ) : null;
-  }
-
-  const renderArrows = () => (
+  const renderArrows = () => props.images.length > 1 ? (
     <div className={`
       sg-text-white
       sg-h-full
@@ -184,10 +96,22 @@ export function Lightbox<T>(props: Props<T>) {
       sg-justify-center
       sg-select-none
     `}>
-      {renderArrow('sg-left-0 hover:before:sg-bg-gradient-to-r', prevIndex, 'left')}
-      {renderArrow('sg-right-0 hover:before:sg-bg-gradient-to-l', nextIndex, 'right')}
+      <Arrow
+        className="sg-left-0 hover:before:sg-bg-gradient-to-r"
+        direction="left"
+        activeIndex={activeIndex}
+        hasAdjustedPosition={hasSomeImagesTitle}
+        onClick={() => handleMove(prevIndex, 'left')}
+      />
+      <Arrow
+        className="sg-right-0 hover:before:sg-bg-gradient-to-l"
+        direction="right"
+        activeIndex={activeIndex}
+        hasAdjustedPosition={hasSomeImagesTitle}
+        onClick={() => handleMove(nextIndex, 'right')}
+      />
     </div>
-  );
+  ) : null;
 
   const renderClose = () => (
     <div
@@ -282,7 +206,8 @@ export function Lightbox<T>(props: Props<T>) {
               >
                 <div
                   ref={imageRefs[index]}
-                  className={`
+                  className={classNames(`
+                    sg-image-wrapper
                     sg-absolute
                     sg-top-0
                     sg-left-0
@@ -294,7 +219,9 @@ export function Lightbox<T>(props: Props<T>) {
                     sg-flex-col
                     sg-justify-center
                     sg-items-center
-                  `}
+                  `, {
+                    ['sg-has-title']: Boolean(image.title)
+                  })}
                 >
                   {renderFullImage(image)}
                   {renderImageTitle(image)}
