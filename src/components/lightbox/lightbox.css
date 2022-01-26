@@ -1,19 +1,4 @@
-.sg-arrow-enter {
-  transform: scale(1);
-}
-.sg-arrow-enter-active {
-  transform: scale(1.1);
-  opacity: 1;
-  transition: transform 200ms linear;
-}
-.sg-arrow-exit {
-  opacity: 1;
-  transform: scale(1.1);
-}
-.sg-arrow-exit-active {
-  transform: scale(1);
-  transition: transform 200ms linear;
-}
+
 .sg-fade-enter {
   opacity: 0;
 }
@@ -76,6 +61,12 @@
 .sg-slide-left-enter ~ .sg-slide-right-exit-active {
   opacity: 0;
   transform: translateX(100%);
+  transition: all 500ms linear;
+}
+
+.sg-slide-right-enter ~ .sg-slide-left-exit-active {
+  opacity: 0;
+  transform: translateX(-100%);
   transition: all 500ms linear;
 }
 

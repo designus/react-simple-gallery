@@ -10,17 +10,19 @@ export default defineConfig({
     react()
   ],
   build: {
+    sourcemap: true,
     lib: {
       entry: path.resolve(__dirname, 'src/components/index.ts'),
       name: 'ReactSimpleGallery',
-      fileName: (format) => `react-simple-gallery.${format}.js`
+      fileName: (format) => `react-simple-gallery.${format}.js`,
     },
     rollupOptions: {
       external: [
         'react',
         'react-dom',
         path.resolve(__dirname, 'src/App.tsx'),
-        path.resolve(__dirname, 'src/main.tsx')
+        path.resolve(__dirname, 'src/main.tsx'),
+        path.resolve(__dirname, 'public')
       ],
       output: {
         globals: {
