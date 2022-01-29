@@ -71,7 +71,11 @@
 }
 
 .sg-image-wrapper {
-  img {
+  .gatsby-image-wrapper {
+    width: 100%;
+  }
+
+  & > img {
     display: block;
     vertical-align: middle;
     max-width: 100%;
@@ -79,7 +83,7 @@
   }
 
   &.sg-has-title {
-    img {
+    & > img {
       max-height: calc(100% - 50px);
     }
   }

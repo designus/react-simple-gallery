@@ -205,6 +205,7 @@ export function Lightbox<T>(props: Props<T>) {
                 classNames={getAnimationClassName()}
               >
                 <div
+                  key={index}
                   ref={imageRefs[index]}
                   className={classNames(`
                     sg-image-wrapper
