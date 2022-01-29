@@ -9,43 +9,24 @@ import './arrow.css';
 interface Props {
   className: string;
   direction: Direction;
-  activeIndex: number;
+  animate: boolean;
   hasAdjustedPosition: boolean;
-  onClick: (direction: Direction) => void
+  onClick: (direction: Direction) => void;
 }
   
 export const Arrow: FC<Props> = props => {
-  const { className, direction, hasAdjustedPosition, activeIndex, onClick } = props;
+  const { className, direction, hasAdjustedPosition, animate, onClick } = props;
   const arrowRefs: Record<Direction, MutableRefObject<null | HTMLDivElement>> = {
     left: useRef(null),
     right: useRef(null)
   }
 
-  const initialAnimateArrow = useRef<Record<Direction, boolean>>({
-    left: false,
-    right: false
-  });
-
-  const [animateArrow, setAnimateArrow] = useState(initialAnimateArrow.current);
-
   const Icon = direction === 'left' ? Left : Right;
-
-  useEffect(() => {
-    setAnimateArrow(initialAnimateArrow.current);
-  }, [activeIndex]);
-
-  const handleClick = (newDirection: Direction) => {
-    setAnimateArrow({
-      left: newDirection === 'left',
-      right: newDirection === 'right'
-    });
-    onClick(newDirection);
-  }
 
   return (
     <CSSTransition
       nodeRef={arrowRefs[direction]}
-      in={animateArrow[direction]}
+      in={animate}
       timeout={200}
       classNames="sg-arrow"
     >
@@ -78,7 +59,7 @@ export const Arrow: FC<Props> = props => {
       >
         <div
           aria-label={`${direction} arrow`}
-          onClick={() => handleClick(direction)}
+          onClick={() => onClick(direction)}
           role="button"
           tabIndex={0}
           className={classNames(

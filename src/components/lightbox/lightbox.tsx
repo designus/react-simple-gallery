@@ -32,6 +32,17 @@ export function Lightbox<T>(props: Props<T>) {
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
 
+  const initialAnimateArrow = useRef<Record<Direction, boolean>>({
+    left: false,
+    right: false
+  });
+
+  const [animateArrow, setAnimateArrow] = useState(initialAnimateArrow.current);
+
+  useEffect(() => {
+    setAnimateArrow(initialAnimateArrow.current);
+  }, [activeIndex]);
+
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current?.focus();
@@ -60,6 +71,10 @@ export function Lightbox<T>(props: Props<T>) {
   const handleMove = (newIndex: number, newDirection: Direction) => {
     setDirection(newDirection);
     setActiveIndex(newIndex);
+    setAnimateArrow({
+      left: newDirection === 'left',
+      right: newDirection === 'right'
+    })
   };
 
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
@@ -99,16 +114,16 @@ export function Lightbox<T>(props: Props<T>) {
       <Arrow
         className="sg-left-0 hover:before:sg-bg-gradient-to-r"
         direction="left"
-        activeIndex={activeIndex}
         hasAdjustedPosition={hasSomeImagesTitle}
         onClick={() => handleMove(prevIndex, 'left')}
+        animate={animateArrow.left}
       />
       <Arrow
         className="sg-right-0 hover:before:sg-bg-gradient-to-l"
         direction="right"
-        activeIndex={activeIndex}
         hasAdjustedPosition={hasSomeImagesTitle}
         onClick={() => handleMove(nextIndex, 'right')}
+        animate={animateArrow.right}
       />
     </div>
   ) : null;
