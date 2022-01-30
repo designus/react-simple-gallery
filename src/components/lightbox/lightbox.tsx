@@ -212,15 +212,14 @@ export function Lightbox<T>(props: Props<T>) {
         <TransitionGroup>
           {props.images.map((image, index) => {
             imageRefs[index] = useRef(null);
-            return index === activeIndex && (
+            return index === activeIndex ? (
               <CSSTransition
-                key={index}
+                key={image.id ?? index}
                 nodeRef={imageRefs[index]}
                 timeout={transitionTimeoutLookup[animation]}
                 classNames={getAnimationClassName()}
               >
                 <div
-                  key={index}
                   ref={imageRefs[index]}
                   className={classNames(`
                     sg-image-wrapper
@@ -239,11 +238,13 @@ export function Lightbox<T>(props: Props<T>) {
                     ['sg-has-title']: Boolean(image.title)
                   })}
                 >
-                  {renderFullImage(image)}
+                  <React.Fragment key="fullImage">
+                    {renderFullImage(image)}
+                  </React.Fragment>
                   {renderImageTitle(image)}
                 </div>
               </CSSTransition>
-            )
+            ) : null
           })}
         </TransitionGroup>
         {renderArrows()}

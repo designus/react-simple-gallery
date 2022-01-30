@@ -23,13 +23,10 @@ const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
   }
 
   return (
-    <div className="sg-max-w-screen-2xl sg-h-full">
-      <img
-        className="sg-relative sg-top-2/4 sg-transform sg--translate-y-2/4"
-        src={image.full}
-        alt={image.alt || ''}
-      />
-    </div>
+    <img
+      src={image.full}
+      alt={image.alt || ''}
+    />
   );
 }
 

@@ -20,7 +20,8 @@ function App() {
         <h1>Custom gallery</h1>
         <Gallery
           images={images}
-          renderFullImage={image => <img src={image.full} />}
+          // renderThumbImage={image => <img src={image.thumb} />}
+          // renderFullImage={image => <img src={image.full} />}
         />
       </div>
     )
