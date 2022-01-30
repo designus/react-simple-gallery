@@ -3,11 +3,13 @@ import react from '@vitejs/plugin-react';
 import svgr from '@honkhonk/vite-plugin-svgr';
 import typescript from '@rollup/plugin-typescript';
 import * as path from 'path';
+import cssInject from './cssInjectedByJsPlugin';
 
 export default defineConfig({
   plugins: [
     svgr(),
-    react()
+    react(),
+    cssInject()
   ],
   build: {
     sourcemap: true,
