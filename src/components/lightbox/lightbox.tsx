@@ -164,7 +164,6 @@ export function Lightbox<T>(props: Props<T>) {
     <div className={`
       sg-text-white
       sg-text-center
-      sg-p-5px
       sg-select-none
       sg-min-h-50px
       sg-flex
