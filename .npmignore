@@ -6,4 +6,3 @@ vite.config.ts
 postcss.config.js
 libInjectCss.ts
 public
-dist/*.jpg

@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState, useEffect, useRef, MutableRefObject } from 'react';
+import React, { MouseEvent, useState, useEffect, useRef, MutableRefObject, createRef } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -26,11 +26,22 @@ export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const containerRef = useRef<null | HTMLDivElement>(null);
-  const imageRefs: MutableRefObject<null | HTMLDivElement>[] = [];  
+  const imageRefs: MutableRefObject<null | HTMLDivElement>[] = props.images.map(image => createRef());  
   const [direction, setDirection] = useState<Direction>('right')
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
+
+  const initialAnimateArrow = useRef<Record<Direction, boolean>>({
+    left: false,
+    right: false
+  });
+
+  const [animateArrow, setAnimateArrow] = useState(initialAnimateArrow.current);
+
+  useEffect(() => {
+    setAnimateArrow(initialAnimateArrow.current);
+  }, [activeIndex]);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -60,6 +71,10 @@ export function Lightbox<T>(props: Props<T>) {
   const handleMove = (newIndex: number, newDirection: Direction) => {
     setDirection(newDirection);
     setActiveIndex(newIndex);
+    setAnimateArrow({
+      left: newDirection === 'left',
+      right: newDirection === 'right'
+    })
   };
 
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
@@ -99,16 +114,16 @@ export function Lightbox<T>(props: Props<T>) {
       <Arrow
         className="sg-left-0 hover:before:sg-bg-gradient-to-r"
         direction="left"
-        activeIndex={activeIndex}
         hasAdjustedPosition={hasSomeImagesTitle}
         onClick={() => handleMove(prevIndex, 'left')}
+        animate={animateArrow.left}
       />
       <Arrow
         className="sg-right-0 hover:before:sg-bg-gradient-to-l"
         direction="right"
-        activeIndex={activeIndex}
         hasAdjustedPosition={hasSomeImagesTitle}
         onClick={() => handleMove(nextIndex, 'right')}
+        animate={animateArrow.right}
       />
     </div>
   ) : null;
@@ -149,7 +164,6 @@ export function Lightbox<T>(props: Props<T>) {
     <div className={`
       sg-text-white
       sg-text-center
-      sg-p-5px
       sg-select-none
       sg-min-h-50px
       sg-flex
@@ -196,10 +210,9 @@ export function Lightbox<T>(props: Props<T>) {
         {renderClose()}
         <TransitionGroup>
           {props.images.map((image, index) => {
-            imageRefs[index] = useRef(null);
-            return index === activeIndex && (
+            return index === activeIndex ? (
               <CSSTransition
-                key={index}
+                key={image.id ?? index}
                 nodeRef={imageRefs[index]}
                 timeout={transitionTimeoutLookup[animation]}
                 classNames={getAnimationClassName()}
@@ -223,11 +236,13 @@ export function Lightbox<T>(props: Props<T>) {
                     ['sg-has-title']: Boolean(image.title)
                   })}
                 >
-                  {renderFullImage(image)}
+                  <React.Fragment key="fullImage">
+                    {renderFullImage(image)}
+                  </React.Fragment>
                   {renderImageTitle(image)}
                 </div>
               </CSSTransition>
-            )
+            ) : null
           })}
         </TransitionGroup>
         {renderArrows()}
