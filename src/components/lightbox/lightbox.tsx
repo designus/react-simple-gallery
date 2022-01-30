@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState, useEffect, useRef, MutableRefObject } from 'react';
+import React, { MouseEvent, useState, useEffect, useRef, MutableRefObject, createRef } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
@@ -26,7 +26,7 @@ export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const containerRef = useRef<null | HTMLDivElement>(null);
-  const imageRefs: MutableRefObject<null | HTMLDivElement>[] = [];  
+  const imageRefs: MutableRefObject<null | HTMLDivElement>[] = props.images.map(image => createRef());  
   const [direction, setDirection] = useState<Direction>('right')
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
@@ -211,7 +211,6 @@ export function Lightbox<T>(props: Props<T>) {
         {renderClose()}
         <TransitionGroup>
           {props.images.map((image, index) => {
-            imageRefs[index] = useRef(null);
             return index === activeIndex ? (
               <CSSTransition
                 key={image.id ?? index}
