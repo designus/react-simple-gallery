@@ -1,7 +1,7 @@
-import React, { MouseEvent, useState, useEffect, useRef, MutableRefObject, createRef } from 'react';
+import React, { MouseEvent, useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+
 import { Arrow } from './arrow';
 import { GalleryImage, TransitionAnimation, RenderImage, Direction } from '../types';
 import CloseIcon from './close-icon.svg?component';
@@ -16,21 +16,43 @@ interface Props<T> {
   renderFullImage: RenderImage<T>;
 }
 
-const transitionTimeoutLookup: Record<TransitionAnimation, number> = {
-  fade: 300,
-  slide: 500,
-  none: 0
+type TransitionState = 'exited' | 'exiting' | 'entered' | 'entering';
+
+interface Images<T> {
+  previousImage: T,
+  currentImage: T
 }
   
 export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const containerRef = useRef<null | HTMLDivElement>(null);
-  const imageRefs: MutableRefObject<null | HTMLDivElement>[] = props.images.map(image => createRef());  
-  const [direction, setDirection] = useState<Direction>('right')
+  const [direction, setDirection] = useState<Direction>('right');
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
+
+  const [visibleImages, setVisibleImages] = useState<Images<GalleryImage<T>>>({
+    previousImage: props.images[props.activeIndex ?? 0],
+    currentImage: props.images[props.activeIndex ?? 0]
+  })
+
+  const getAnimationClassName = (state: TransitionState) => {
+    if (animation === 'slide') {
+      return `slide-${direction}-${state}`;
+    }
+    
+    if (animation === 'fade') {
+      return `fade-${state}`;
+    }
+
+    return '';
+  };
+
+  const [transitionState, setTransitionState] = useState<Images<TransitionState>>({
+    previousImage: 'exited',
+    currentImage: 'entered'
+  })
 
   const initialAnimateArrow = useRef<Record<Direction, boolean>>({
     left: false,
@@ -56,21 +78,32 @@ export function Lightbox<T>(props: Props<T>) {
 
   const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
 
-  const getAnimationClassName = () => {
-    if (animation === 'slide') {
-      return `sg-slide-${direction}`;
-    }
-    
-    if (animation === 'fade') {
-      return 'sg-fade';
-    }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setTransitionState({
+        previousImage: 'exited',
+        currentImage: 'entered'
+      })
+    }, 0)
 
-    return '';
-  };
+    return () => {
+      clearTimeout(timer);
+    }
+  }, [visibleImages])
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
-    setDirection(newDirection);
+    setTransitionState({
+      previousImage: 'exiting',
+      currentImage: 'entering'
+    })
+    
+    setVisibleImages(state => ({
+      previousImage: state.currentImage,
+      currentImage: props.images[newIndex]
+    }));
+
     setActiveIndex(newIndex);
+    setDirection(newDirection);
     setAnimateArrow({
       left: newDirection === 'left',
       right: newDirection === 'right'
@@ -161,19 +194,29 @@ export function Lightbox<T>(props: Props<T>) {
   );
 
   const renderImageTitle = (image: GalleryImage<T>) => hasSomeImagesTitle && (
-    <div className={`
-      sg-text-white
-      sg-text-center
-      sg-select-none
-      sg-min-h-50px
-      sg-flex
-      sg-flex-col
-      sg-justify-center
-      sg-text-base
-    `}>
+    <div className="sg-text-white sg-text-center sg-select-none sg-min-h-50px sg-flex sg-flex-col sg-justify-center sg-text-base">
       {image.title}
     </div>
   );
+
+  const handleAnimationEnd = () => {
+    setVisibleImages(state => ({
+      ...state,
+      previousImage: state.currentImage
+    }))
+  }
+
+  const renderImage = (image: GalleryImage<T>, transitionClass: string) => (
+    <div
+      onTransitionEnd={handleAnimationEnd}
+      className={classNames(`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center`, transitionClass, {
+        ['sg-has-title']: Boolean(image.title),
+      })}
+    >
+      {renderFullImage(image)}
+      {renderImageTitle(image)}
+    </div>
+  )
 
   const renderModal = () => (
     <div
@@ -208,43 +251,8 @@ export function Lightbox<T>(props: Props<T>) {
     >
       <div className="sg-w-full sg-h-full sg-relative">
         {renderClose()}
-        <TransitionGroup>
-          {props.images.map((image, index) => {
-            return index === activeIndex ? (
-              <CSSTransition
-                key={image.id ?? index}
-                nodeRef={imageRefs[index]}
-                timeout={transitionTimeoutLookup[animation]}
-                classNames={getAnimationClassName()}
-              >
-                <div
-                  ref={imageRefs[index]}
-                  className={classNames(`
-                    sg-image-wrapper
-                    sg-absolute
-                    sg-top-0
-                    sg-left-0
-                    sg-right-0
-                    sg-bottom-0
-                    sg-w-full
-                    sg-m-auto
-                    sg-flex
-                    sg-flex-col
-                    sg-justify-center
-                    sg-items-center
-                  `, {
-                    ['sg-has-title']: Boolean(image.title)
-                  })}
-                >
-                  <React.Fragment key="fullImage">
-                    {renderFullImage(image)}
-                  </React.Fragment>
-                  {renderImageTitle(image)}
-                </div>
-              </CSSTransition>
-            ) : null
-          })}
-        </TransitionGroup>
+        {animation !== 'none' && renderImage(visibleImages.previousImage, getAnimationClassName(transitionState.previousImage))}
+        {renderImage(visibleImages.currentImage, getAnimationClassName(transitionState.currentImage))}
         {renderArrows()}
       </div>
     </div>

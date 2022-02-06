@@ -42,7 +42,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
   const {
     images = [],
     className = '',
-    animation = 'slide',
+    animation,
     renderThumbImage = defaultRenderThumbImage,
     renderFullImage = defaultRenderFullImage
   } = props;

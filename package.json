@@ -23,7 +23,7 @@
       "require": "./dist/react-simple-gallery.umd.js"
     }
   },
-  "author": "Martynas Viskontas",
+  "author": "Martynas Viskontas (martynas.viskontas@gmail.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/designus/react-simple-gallery/issues"
@@ -54,6 +54,7 @@
     "css.escape": "^1.5.1",
     "postcss": "^8.4.5",
     "postcss-nested": "^5.0.6",
+    "preact": "^10.6.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "tailwindcss": "^3.0.13",
