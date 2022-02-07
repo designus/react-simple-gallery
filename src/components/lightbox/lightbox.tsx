@@ -28,6 +28,7 @@ export function Lightbox<T>(props: Props<T>) {
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const containerRef = useRef<null | HTMLDivElement>(null);
   const [direction, setDirection] = useState<Direction>('right');
+  const timer = useRef<number | undefined>();
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
@@ -79,7 +80,7 @@ export function Lightbox<T>(props: Props<T>) {
   const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       setTransitionState({
         previousImage: 'exited',
         currentImage: 'entered'
@@ -87,7 +88,7 @@ export function Lightbox<T>(props: Props<T>) {
     }, 0)
 
     return () => {
-      clearTimeout(timer);
+      clearTimeout(timer.current);
     }
   }, [visibleImages])
 

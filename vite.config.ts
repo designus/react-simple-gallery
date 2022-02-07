@@ -11,9 +11,11 @@ export default defineConfig({
     react(),
     cssInject()
   ],
-  alias: {
-    react: 'preact/compat',
-    'react-dom': 'preact/compat'
+  resolve: {
+    alias: {
+      react: 'preact/compat',
+      'react-dom': 'preact/compat'
+    }
   },
   build: {
     sourcemap: true,
