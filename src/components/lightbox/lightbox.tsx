@@ -40,11 +40,11 @@ export function Lightbox<T>(props: Props<T>) {
 
   const getAnimationClassName = (state: TransitionState) => {
     if (animation === 'slide') {
-      return `slide-${direction}-${state}`;
+      return `sg-slide-${direction}-${state}`;
     }
     
     if (animation === 'fade') {
-      return `fade-${state}`;
+      return `sg-fade-${state}`;
     }
 
     return '';
@@ -72,12 +72,9 @@ export function Lightbox<T>(props: Props<T>) {
     }
   }, [containerRef]);
 
-
   useEffect(() => {
     setActiveIndex(props.activeIndex ?? 0);
   }, [props.activeIndex]);
-
-  const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
 
   useEffect(() => {
     timer.current = setTimeout(() => {
@@ -90,7 +87,9 @@ export function Lightbox<T>(props: Props<T>) {
     return () => {
       clearTimeout(timer.current);
     }
-  }, [visibleImages])
+  }, [visibleImages]);
+
+  const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
     setTransitionState({

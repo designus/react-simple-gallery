@@ -1,58 +1,58 @@
-.fade-entering {
+.sg-fade-entering {
   opacity: 0;
 }
 
-.fade-entered {
+.sg-fade-entered {
   opacity: 1;
   transition: opacity 300ms linear;
 }
 
-.fade-exiting {
+.sg-fade-exiting {
   opacity: 1;
 }
 
-.fade-exited {
+.sg-fade-exited {
   opacity: 0;
   transition: opacity 300ms linear;
 }
 
-.slide-left-entering {
+.sg-slide-left-entering {
   opacity: 0;
   transform: translateX(-100%);
 }
 
-.slide-left-entered {
+.sg-slide-left-entered {
   transform: translateX(0);
   opacity: 1;
   transition: all 500ms linear;
 }
 
-.slide-left-exiting {
+.sg-slide-left-exiting {
   transform: translateX(0);
 }
 
-.slide-left-exited {
+.sg-slide-left-exited {
   transform: translateX(100%);
   opacity: 0;
   transition: all 500ms linear;
 }
 
-.slide-right-entering {
+.sg-slide-right-entering {
   opacity: 0;
   transform: translateX(100%);
 }
 
-.slide-right-entered {
+.sg-slide-right-entered {
   opacity: 1;
   transform: translateX(0);
   transition: all 500ms linear;
 }
 
-.slide-right-exiting {
+.sg-slide-right-exiting {
   transform: translateX(0);
 }
 
-.slide-right-exited {
+.sg-slide-right-exited {
   opacity: 0;
   transform: translateX(-100%);
   transition: all 500ms linear;
