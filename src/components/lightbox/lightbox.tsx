@@ -1,6 +1,5 @@
 import React, { MouseEvent, useState, useEffect, useRef, RefObject } from 'react';
 import { createPortal } from 'react-dom';
-import classNames from 'classnames';
 
 import { Arrow, PublicChildMethods } from './arrow';
 import { GalleryImage, Direction } from '../types';
@@ -187,9 +186,7 @@ export function Lightbox<T>(props: Props<T>) {
   const renderImage = (image: GalleryImage<T>, transitionClass: string) => (
     <div
       onTransitionEnd={handleAnimationEnd}
-      className={classNames(`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center`, transitionClass, {
-        ['sg-has-title']: Boolean(image.title),
-      })}
+      className={`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center ${Boolean(image.title) ? 'sg-has-title' : ''} ${transitionClass}`}
     >
       {renderFullImage(image)}
       {renderImageTitle(image)}

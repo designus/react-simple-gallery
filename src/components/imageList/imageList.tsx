@@ -1,7 +1,6 @@
 
   
 import React, { useState } from 'react';
-import classNames from 'classnames';
 import { Lightbox } from '../lightbox';
 import { GalleryImage, ImageSource, RenderImage, TransitionAnimation } from '../types';
 
@@ -61,7 +60,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
     <>
       <div
         role="list"
-        className={classNames(className, { [defaultLayoutClasses]: !className })}
+        className={`${className} ${!className ? defaultLayoutClasses : ''}`}
       >
         {images.map((image, index) => {
           return (
