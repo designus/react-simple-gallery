@@ -1,27 +1,13 @@
-import React, { MouseEvent, useState, useEffect, useRef } from 'react';
+import React, { MouseEvent, useState, useEffect, useRef, RefObject } from 'react';
 import { createPortal } from 'react-dom';
 import classNames from 'classnames';
 
-import { Arrow } from './arrow';
-import { GalleryImage, TransitionAnimation, RenderImage, Direction } from '../types';
+import { Arrow, PublicChildMethods } from './arrow';
+import { GalleryImage, Direction } from '../types';
+import { Props, TransitionState, Images } from './types';
 import CloseIcon from './close-icon.svg?component';
 
 import './lightbox.css';
-  
-interface Props<T> {
-  onClose: VoidFunction;
-  images: GalleryImage<T>[];
-  activeIndex?: number;
-  animation?: TransitionAnimation;
-  renderFullImage: RenderImage<T>;
-}
-
-type TransitionState = 'exited' | 'exiting' | 'entered' | 'entering';
-
-interface Images<T> {
-  previousImage: T,
-  currentImage: T
-}
   
 export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
@@ -32,6 +18,11 @@ export function Lightbox<T>(props: Props<T>) {
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
+
+  const arrowRefs: Record<Direction, RefObject<PublicChildMethods>> = {
+    left: useRef(null),
+    right: useRef(null)
+  };
 
   const [visibleImages, setVisibleImages] = useState<Images<GalleryImage<T>>>({
     previousImage: props.images[props.activeIndex ?? 0],
@@ -54,17 +45,6 @@ export function Lightbox<T>(props: Props<T>) {
     previousImage: 'exited',
     currentImage: 'entered'
   })
-
-  const initialAnimateArrow = useRef<Record<Direction, boolean>>({
-    left: false,
-    right: false
-  });
-
-  const [animateArrow, setAnimateArrow] = useState(initialAnimateArrow.current);
-
-  useEffect(() => {
-    setAnimateArrow(initialAnimateArrow.current);
-  }, [activeIndex]);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -92,6 +72,8 @@ export function Lightbox<T>(props: Props<T>) {
   const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
+    arrowRefs[newDirection].current?.toggleAnimation(true);
+
     setTransitionState({
       previousImage: 'exiting',
       currentImage: 'entering'
@@ -104,10 +86,6 @@ export function Lightbox<T>(props: Props<T>) {
 
     setActiveIndex(newIndex);
     setDirection(newDirection);
-    setAnimateArrow({
-      left: newDirection === 'left',
-      right: newDirection === 'right'
-    })
   };
 
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
@@ -149,14 +127,14 @@ export function Lightbox<T>(props: Props<T>) {
         direction="left"
         hasAdjustedPosition={hasSomeImagesTitle}
         onClick={() => handleMove(prevIndex, 'left')}
-        animate={animateArrow.left}
+        ref={arrowRefs.left}
       />
       <Arrow
         className="sg-right-0 hover:before:sg-bg-gradient-to-l"
         direction="right"
         hasAdjustedPosition={hasSomeImagesTitle}
         onClick={() => handleMove(nextIndex, 'right')}
-        animate={animateArrow.right}
+        ref={arrowRefs.right}
       />
     </div>
   ) : null;
