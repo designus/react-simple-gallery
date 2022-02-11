@@ -2,9 +2,9 @@ import React, { MouseEvent, useState, useEffect, useRef, RefObject } from 'react
 import { createPortal } from 'react-dom';
 
 import { Arrow, PublicChildMethods } from './arrow';
+import { CloseButton } from './closeButton';
 import { GalleryImage, Direction } from '../types';
 import { Props, TransitionState, Images } from './types';
-import CloseIcon from './close-icon.svg?component';
 
 import './lightbox.css';
   
@@ -109,18 +109,7 @@ export function Lightbox<T>(props: Props<T>) {
   };
 
   const renderArrows = () => props.images.length > 1 ? (
-    <div className={`
-      sg-text-white
-      sg-h-full
-      sg-relative
-      sg-w-full
-      sg-text-5xl
-      sm:sg-text-6xl
-      sg-flex
-      sg-flex-col
-      sg-justify-center
-      sg-select-none
-    `}>
+    <div className="sg-text-white sg-h-full sg-relative sg-w-full sg-text-5xl sm:sg-text-6xl sg-flex sg-flex-col sg-justify-center sg-select-none">
       <Arrow
         className="sg-left-0 hover:before:sg-bg-gradient-to-r"
         direction="left"
@@ -138,37 +127,6 @@ export function Lightbox<T>(props: Props<T>) {
     </div>
   ) : null;
 
-  const renderClose = () => (
-    <div
-      role="button"
-      tabIndex={0}
-      aria-label="Close image button"
-      onClick={props.onClose}
-      className={`
-        sg-absolute
-        sg-z-20
-        sg-right-10px
-        sg-top-10px
-        sg-flex
-        sg-justify-center
-        sg-items-center
-        sg-bg-black
-        sg-bg-opacity-30
-        sg-rounded-full
-        sg-cursor-pointer
-      `}
-    >
-      <CloseIcon className={`
-        sg-fill-white
-        sg-w-10
-        sg-h-10
-        sg-mr-2px
-        sm:sg-w-12
-        sm:sg-h-12
-      `}
-      />
-    </div>
-  );
 
   const renderImageTitle = (image: GalleryImage<T>) => hasSomeImagesTitle && (
     <div className="sg-text-white sg-text-center sg-select-none sg-min-h-50px sg-flex sg-flex-col sg-justify-center sg-text-base">
@@ -225,7 +183,7 @@ export function Lightbox<T>(props: Props<T>) {
       ref={containerRef}
     >
       <div className="sg-w-full sg-h-full sg-relative">
-        {renderClose()}
+        <CloseButton onClose={props.onClose} />
         {animation !== 'none' && renderImage(visibleImages.previousImage, getAnimationClassName(transitionState.previousImage))}
         {renderImage(visibleImages.currentImage, getAnimationClassName(transitionState.currentImage))}
         {renderArrows()}
