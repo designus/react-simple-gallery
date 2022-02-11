@@ -108,6 +108,13 @@ export function Lightbox<T>(props: Props<T>) {
     }
   };
 
+  const handleAnimationEnd = () => {
+    setVisibleImages(state => ({
+      ...state,
+      previousImage: state.currentImage
+    }))
+  }
+
   const renderArrows = () => props.images.length > 1 ? (
     <div className="sg-text-white sg-h-full sg-relative sg-w-full sg-text-5xl sm:sg-text-6xl sg-flex sg-flex-col sg-justify-center sg-select-none">
       <Arrow
@@ -133,13 +140,6 @@ export function Lightbox<T>(props: Props<T>) {
       {image.title}
     </div>
   );
-
-  const handleAnimationEnd = () => {
-    setVisibleImages(state => ({
-      ...state,
-      previousImage: state.currentImage
-    }))
-  }
 
   const renderImage = (image: GalleryImage<T>, transitionClass: string) => (
     <div
