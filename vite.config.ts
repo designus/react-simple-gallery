@@ -12,10 +12,13 @@ export default defineConfig({
     cssInject()
   ],
   resolve: {
-    alias: {
-      react: 'preact/compat',
-      'react-dom': 'preact/compat'
-    }
+    // Preact support
+    // alias: {
+    //   react: 'preact/compat',
+    //   'react-dom/test-utils': 'preact/test-utils',
+    //   'react-dom': 'preact/compat',
+    //   'react/jsx-runtime': 'preact/jsx-runtime'
+    // }
   },
   build: {
     sourcemap: true,

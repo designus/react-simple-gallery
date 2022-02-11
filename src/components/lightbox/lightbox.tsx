@@ -1,4 +1,4 @@
-import React, { MouseEvent, useState, useEffect, useRef, RefObject } from 'react';
+import React, { MouseEvent, useState, useEffect, useRef, RefObject, Fragment } from 'react';
 import { createPortal } from 'react-dom';
 
 import { Arrow, PublicChildMethods } from './arrow';
@@ -146,7 +146,9 @@ export function Lightbox<T>(props: Props<T>) {
       onTransitionEnd={handleAnimationEnd}
       className={`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center ${Boolean(image.title) ? 'sg-has-title' : ''} ${transitionClass}`}
     >
-      {renderFullImage(image)}
+      <Fragment key="fullImage">
+        {renderFullImage(image)}
+      </Fragment>
       {renderImageTitle(image)}
     </div>
   )
