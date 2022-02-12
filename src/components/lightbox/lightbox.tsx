@@ -1,5 +1,5 @@
-import React, { MouseEvent, useState, useEffect, useRef, RefObject, Fragment } from 'react';
-import { createPortal } from 'react-dom';
+import React, { MouseEvent, useState, useEffect, useCallback, useLayoutEffect,useRef, RefObject, Fragment } from 'react';
+import { createPortal, flushSync } from 'react-dom';
 
 import { Arrow, PublicChildMethods } from './arrow';
 import { CloseButton } from './closeButton';
@@ -7,11 +7,14 @@ import { GalleryImage, Direction } from '../types';
 import { Props, TransitionState, Images } from './types';
 
 import './lightbox.css';
-  
+
+const objectKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>
+
 export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
-  const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const containerRef = useRef<null | HTMLDivElement>(null);
+  const imageWrapperRef = useRef<null | HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const [direction, setDirection] = useState<Direction>('right');
   const timer = useRef<number | undefined>();
 
@@ -76,15 +79,15 @@ export function Lightbox<T>(props: Props<T>) {
     setTransitionState({
       previousImage: 'exiting',
       currentImage: 'entering'
-    })
-    
+    });
+
     setVisibleImages(state => ({
       previousImage: state.currentImage,
       currentImage: props.images[newIndex]
     }));
 
     setActiveIndex(newIndex);
-    setDirection(newDirection);
+    setDirection(newDirection)
   };
 
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
@@ -141,7 +144,7 @@ export function Lightbox<T>(props: Props<T>) {
     </div>
   );
 
-  const renderImage = (image: GalleryImage<T>, transitionClass: string) => (
+  const renderImage = (image: GalleryImage<T>, transitionClass = '') => (
     <div
       onTransitionEnd={handleAnimationEnd}
       className={`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center ${Boolean(image.title) ? 'sg-has-title' : ''} ${transitionClass}`}
@@ -151,7 +154,11 @@ export function Lightbox<T>(props: Props<T>) {
       </Fragment>
       {renderImageTitle(image)}
     </div>
-  )
+  );
+
+  const renderImages = () => animation === 'none'
+    ? renderImage(visibleImages.currentImage)
+    : objectKeys(visibleImages).map(key => renderImage(visibleImages[key], getAnimationClassName(transitionState[key])))
 
   const renderModal = () => (
     <div
@@ -184,10 +191,9 @@ export function Lightbox<T>(props: Props<T>) {
       onMouseDown={handleClose}
       ref={containerRef}
     >
-      <div className="sg-w-full sg-h-full sg-relative">
+      <div ref={imageWrapperRef} className="sg-w-full sg-h-full sg-relative">
         <CloseButton onClose={props.onClose} />
-        {animation !== 'none' && renderImage(visibleImages.previousImage, getAnimationClassName(transitionState.previousImage))}
-        {renderImage(visibleImages.currentImage, getAnimationClassName(transitionState.currentImage))}
+        {renderImages()}
         {renderArrows()}
       </div>
     </div>
