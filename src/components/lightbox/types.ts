@@ -1,4 +1,4 @@
-import { GalleryImage, TransitionAnimation, RenderImage, Direction } from '../types';
+import { GalleryImage, TransitionAnimation, RenderImage } from '../types';
 
 export interface Props<T> {
   onClose: VoidFunction;
@@ -8,9 +8,9 @@ export interface Props<T> {
   renderFullImage: RenderImage<T>;
 }
 
-export type TransitionState = 'exited' | 'exiting' | 'entered' | 'entering';
+export type TransitionState = 'exited' | 'exiting' | 'entered' | 'entering' | '';
 
 export interface Images<T> {
-  previousImage: T,
+  previousImage: T | null,
   currentImage: T
 }

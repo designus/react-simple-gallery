@@ -1,7 +1,8 @@
-import React, { MouseEvent, useState, useEffect, useCallback, useLayoutEffect,useRef, RefObject, Fragment } from 'react';
-import { createPortal, flushSync } from 'react-dom';
+import React, { MouseEvent, useState, useEffect, useRef, RefObject } from 'react';
+import { createPortal } from 'react-dom';
 
 import { Arrow, PublicChildMethods } from './arrow';
+import { PreviewImage } from './previewImage';
 import { CloseButton } from './closeButton';
 import { GalleryImage, Direction } from '../types';
 import { Props, TransitionState, Images } from './types';
@@ -13,9 +14,9 @@ const objectKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>
 export function Lightbox<T>(props: Props<T>) {
   const { animation = 'slide', renderFullImage } = props;
   const containerRef = useRef<null | HTMLDivElement>(null);
-  const imageWrapperRef = useRef<null | HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const [direction, setDirection] = useState<Direction>('right');
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const timer = useRef<number | undefined>();
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
@@ -29,24 +30,26 @@ export function Lightbox<T>(props: Props<T>) {
   const [visibleImages, setVisibleImages] = useState<Images<GalleryImage<T>>>({
     previousImage: props.images[props.activeIndex ?? 0],
     currentImage: props.images[props.activeIndex ?? 0]
-  })
+  });
 
-  const getAnimationClassName = (state: TransitionState) => {
-    if (animation === 'slide') {
+  const [transitionState, setTransitionState] = useState<Images<TransitionState>>({
+    previousImage: '',
+    currentImage: ''
+  });
+
+  const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
+
+  const getAnimationClassName = (state: TransitionState | null) => {
+    if (state && animation === 'slide') {
       return `sg-slide-${direction}-${state}`;
     }
     
-    if (animation === 'fade') {
+    if (state && animation === 'fade') {
       return `sg-fade-${state}`;
     }
 
     return '';
   };
-
-  const [transitionState, setTransitionState] = useState<Images<TransitionState>>({
-    previousImage: 'exited',
-    currentImage: 'entered'
-  })
 
   useEffect(() => {
     if (containerRef.current) {
@@ -59,22 +62,28 @@ export function Lightbox<T>(props: Props<T>) {
   }, [props.activeIndex]);
 
   useEffect(() => {
-    timer.current = setTimeout(() => {
-      setTransitionState({
-        previousImage: 'exited',
-        currentImage: 'entered'
-      })
-    }, 0)
+    if (isTransitioning) {
+      timer.current = setTimeout(() => {
+        setTransitionState({
+          previousImage: 'exited',
+          currentImage: 'entered'
+        })
+      }, 0)
+    } else {
+      clearTimeout(timer.current);
+    }
 
     return () => {
       clearTimeout(timer.current);
     }
-  }, [visibleImages]);
-
-  const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
+  }, [isTransitioning]);
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
+    if (isTransitioning) return;
+
     arrowRefs[newDirection].current?.toggleAnimation(true);
+
+    setIsTransitioning(true);
 
     setTransitionState({
       previousImage: 'exiting',
@@ -87,6 +96,7 @@ export function Lightbox<T>(props: Props<T>) {
     }));
 
     setActiveIndex(newIndex);
+
     setDirection(newDirection)
   };
 
@@ -112,10 +122,8 @@ export function Lightbox<T>(props: Props<T>) {
   };
 
   const handleAnimationEnd = () => {
-    setVisibleImages(state => ({
-      ...state,
-      previousImage: state.currentImage
-    }))
+    setIsTransitioning(false);
+    setVisibleImages(state => ({ ...state, previousImage: state.currentImage }));
   }
 
   const renderArrows = () => props.images.length > 1 ? (
@@ -137,27 +145,28 @@ export function Lightbox<T>(props: Props<T>) {
     </div>
   ) : null;
 
+  const renderImages = () => {
+    if (animation === 'none') {
+      return (
+        <PreviewImage
+          showTitle={hasSomeImagesTitle}
+          renderImage={renderFullImage}
+          image={visibleImages.currentImage}
+        />
+      )
+    }
 
-  const renderImageTitle = (image: GalleryImage<T>) => hasSomeImagesTitle && (
-    <div className="sg-text-white sg-text-center sg-select-none sg-min-h-50px sg-flex sg-flex-col sg-justify-center sg-text-base">
-      {image.title}
-    </div>
-  );
-
-  const renderImage = (image: GalleryImage<T>, key: string, transitionClass = '') => (
-    <div
-      key={key}
-      onTransitionEnd={handleAnimationEnd}
-      className={`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center ${Boolean(image.title) ? 'sg-has-title' : ''} ${transitionClass}`}
-    >
-      {renderFullImage(image)}
-      {renderImageTitle(image)}
-    </div>
-  );
-
-  const renderImages = () => animation === 'none'
-    ? renderImage(visibleImages.currentImage, 'image')
-    : objectKeys(visibleImages).map(key => renderImage(visibleImages[key], key, getAnimationClassName(transitionState[key])))
+    return objectKeys(visibleImages).map(key => (
+      <PreviewImage
+        key={key}
+        showTitle={hasSomeImagesTitle}
+        renderImage={renderFullImage}
+        image={visibleImages[key]}
+        onTransitionEnd={handleAnimationEnd}
+        transitionClass={getAnimationClassName(transitionState[key])}
+      />
+    ))
+  }
 
   const renderModal = () => (
     <div
@@ -190,7 +199,7 @@ export function Lightbox<T>(props: Props<T>) {
       onMouseDown={handleClose}
       ref={containerRef}
     >
-      <div ref={imageWrapperRef} className="sg-w-full sg-h-full sg-relative">
+      <div className="sg-w-full sg-h-full sg-relative">
         <CloseButton onClose={props.onClose} />
         {renderImages()}
         {renderArrows()}
