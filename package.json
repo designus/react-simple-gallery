@@ -51,7 +51,7 @@
   },
   "homepage": "https://github.com/designus/react-simple-gallery#readme",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --config vite-react.config.ts",
     "build-react": "tsc --noEmit && vite --config vite-react.config.ts build",
     "build-preact": "tsc --noEmit && vite --config vite-preact.config.ts build",
     "build": "rm -rf dist && npm run build-react && npm run build-preact",
