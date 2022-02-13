@@ -14,13 +14,34 @@
   "files": [
     "/dist"
   ],
-  "types": "dist/index.d.ts",
-  "main": "./dist/react-simple-gallery.umd.js",
-  "module": "./dist/react-simple-gallery.es.js",
+  "types": "dist/react/index.d.ts",
+  "main": "./dist/react/react-simple-gallery.umd.js",
+  "module": "./dist/react/react-simple-gallery.es.js",
   "exports": {
     ".": {
-      "import": "./dist/react-simple-gallery.es.js",
-      "require": "./dist/react-simple-gallery.umd.js"
+      "import": "./dist/react/react-simple-gallery.es.js",
+      "require": "./dist/react/react-simple-gallery.umd.js"
+    },
+    "./react": {
+      "import": "./dist/react/react-simple-gallery.es.js",
+      "require": "./dist/react/react-simple-gallery.umd.js"
+    },
+    "./preact": {
+      "import": "./dist/preact/react-simple-gallery.es.js",
+      "require": "./dist/preact/react-simple-gallery.umd.js"
+    }    
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/react/index.d.ts"
+      ],
+      "react": [
+        "./dist/react/index.d.ts"
+      ],
+      "preact": [
+        "./dist/preact/index.d.ts"
+      ]
     }
   },
   "author": "Martynas Viskontas (martynas.viskontas@gmail.com)",
@@ -31,7 +52,9 @@
   "homepage": "https://github.com/designus/react-simple-gallery#readme",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "build-react": "tsc --noEmit && vite --config vite-react.config.ts build",
+    "build-preact": "tsc --noEmit && vite --config vite-preact.config.ts build",
+    "build": "rm -rf dist && npm run build-react && npm run build-preact",
     "preview": "vite preview"
   },
   "peerDependencies": {

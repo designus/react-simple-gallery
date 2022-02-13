@@ -22,6 +22,8 @@ export default defineConfig({
   },
   build: {
     sourcemap: true,
+    outDir: './dist/react',
+    emptyOutDir: false,
     lib: {
       entry: path.resolve(__dirname, 'src/components/index.ts'),
       name: 'ReactSimpleGallery',
@@ -42,7 +44,7 @@ export default defineConfig({
         }
       },
       plugins: [
-        typescript()
+        typescript({ outDir: './dist/react'})
       ]
     }
   }
