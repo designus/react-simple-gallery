@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Direction } from '../../types';
 import Left from './left-icon.svg?component';
 import Right from './right-icon.svg?component';
@@ -17,7 +17,7 @@ export interface PublicChildMethods {
   
 export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
   const { className, direction, hasAdjustedPosition, onClick } = props;
-
+  const timer = useRef<number | undefined>();
   const [animation, setAnimation] = useState<boolean>(false);
 
   useImperativeHandle(ref, () => ({
@@ -30,12 +30,17 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
 
   useEffect(() => {
     if (animation) {
-      setTimeout(() => {
+      timer.current = setTimeout(() => {
         setAnimation(false)
       }, 200)
     }
 
-  }, [animation])
+    return () => {
+      clearTimeout(timer.current);
+    }
+
+  }, [animation]);
+
 
   const handleClick = (direction: Direction) => {
     onClick(direction);

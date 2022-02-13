@@ -144,21 +144,20 @@ export function Lightbox<T>(props: Props<T>) {
     </div>
   );
 
-  const renderImage = (image: GalleryImage<T>, transitionClass = '') => (
+  const renderImage = (image: GalleryImage<T>, key: string, transitionClass = '') => (
     <div
+      key={key}
       onTransitionEnd={handleAnimationEnd}
       className={`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center ${Boolean(image.title) ? 'sg-has-title' : ''} ${transitionClass}`}
     >
-      <Fragment key="fullImage">
-        {renderFullImage(image)}
-      </Fragment>
+      {renderFullImage(image)}
       {renderImageTitle(image)}
     </div>
   );
 
   const renderImages = () => animation === 'none'
-    ? renderImage(visibleImages.currentImage)
-    : objectKeys(visibleImages).map(key => renderImage(visibleImages[key], getAnimationClassName(transitionState[key])))
+    ? renderImage(visibleImages.currentImage, 'image')
+    : objectKeys(visibleImages).map(key => renderImage(visibleImages[key], key, getAnimationClassName(transitionState[key])))
 
   const renderModal = () => (
     <div
