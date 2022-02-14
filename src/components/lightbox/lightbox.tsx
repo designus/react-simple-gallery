@@ -28,13 +28,13 @@ export function Lightbox<T>(props: Props<T>) {
   };
 
   const [visibleImages, setVisibleImages] = useState<Images<GalleryImage<T>>>({
-    previousImage: props.images[props.activeIndex ?? 0],
-    currentImage: props.images[props.activeIndex ?? 0]
+    currentImage: props.images[props.activeIndex ?? 0],
+    nextImage: null
   });
 
   const [transitionState, setTransitionState] = useState<Images<TransitionState>>({
-    previousImage: '',
-    currentImage: ''
+    currentImage: '',
+    nextImage: ''
   });
 
   const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
@@ -64,9 +64,18 @@ export function Lightbox<T>(props: Props<T>) {
   useEffect(() => {
     if (isTransitioning) {
       timer.current = setTimeout(() => {
-        setTransitionState({
-          previousImage: 'exited',
-          currentImage: 'entered'
+        setTransitionState(state => {
+          if (state.nextImage === 'entering') {
+            return {
+              nextImage: 'entered',
+              currentImage: 'exited'
+            }
+          } else {
+            return {
+              currentImage: 'entered',
+              nextImage: 'exited'
+            }
+          }
         })
       }, 0)
     } else {
@@ -79,26 +88,57 @@ export function Lightbox<T>(props: Props<T>) {
   }, [isTransitioning]);
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
-    if (isTransitioning) return;
+    if (animation !== 'none' && isTransitioning) return;
 
     arrowRefs[newDirection].current?.toggleAnimation(true);
 
     setIsTransitioning(true);
 
-    setTransitionState({
-      previousImage: 'exiting',
-      currentImage: 'entering'
-    });
+    if (animation === 'none') {
+      setVisibleImages(state => ({
+        ...state,
+        currentImage: props.images[newIndex]
+      }));
+    } else if (visibleImages.currentImage === null) {
+      setTransitionState({
+        nextImage: 'exiting',
+        currentImage: 'entering'
+      });
 
-    setVisibleImages(state => ({
-      previousImage: state.currentImage,
-      currentImage: props.images[newIndex]
-    }));
+      setVisibleImages(state => ({
+        currentImage: props.images[newIndex],
+        nextImage: state.nextImage
+      }));
+    } else {
+      setTransitionState({
+        nextImage: 'entering',
+        currentImage: 'exiting'
+      });
+
+      setVisibleImages(state => ({
+        currentImage: state.currentImage,
+        nextImage: props.images[newIndex]
+      }));
+    }
 
     setActiveIndex(newIndex);
 
     setDirection(newDirection)
   };
+
+  const handleAnimationEnd = () => {
+    if (isTransitioning) {
+      setIsTransitioning(false);
+
+      if (transitionState.nextImage === 'entered') {
+        setVisibleImages(state => ({ nextImage: state.nextImage, currentImage: null }));
+      } else {
+        setVisibleImages(state => ({ currentImage: state.currentImage, nextImage: null }));
+      }
+
+      setTransitionState({ nextImage: '', currentImage: '' })
+    }
+  }
 
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -120,11 +160,6 @@ export function Lightbox<T>(props: Props<T>) {
       props.onClose();
     }
   };
-
-  const handleAnimationEnd = () => {
-    setIsTransitioning(false);
-    setVisibleImages(state => ({ ...state, previousImage: state.currentImage }));
-  }
 
   const renderArrows = () => props.images.length > 1 ? (
     <div className="sg-text-white sg-h-full sg-relative sg-w-full sg-text-5xl sm:sg-text-6xl sg-flex sg-flex-col sg-justify-center sg-select-none">

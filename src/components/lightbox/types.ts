@@ -11,6 +11,6 @@ export interface Props<T> {
 export type TransitionState = 'exited' | 'exiting' | 'entered' | 'entering' | '';
 
 export interface Images<T> {
-  previousImage: T | null,
-  currentImage: T
+  nextImage: T | null,
+  currentImage: T | null
 }

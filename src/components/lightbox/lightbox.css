@@ -42,7 +42,6 @@
 .sg-slide-right-exited {
   opacity: 0;
   transition: all 500ms linear;
-  visibility: hidden;
 }
 
 .sg-slide-left-exited {
