@@ -12,26 +12,26 @@ interface Props {
 }
 
 export interface PublicChildMethods {
-  toggleAnimation: (isOn: boolean) => void;
+  toggleTransition: (isOn: boolean) => void;
 }
   
 export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
   const { className, direction, hasAdjustedPosition, onClick } = props;
   const timer = useRef<number | undefined>();
-  const [animation, setAnimation] = useState<boolean>(false);
+  const [transition, setTransition] = useState<boolean>(false);
 
   useImperativeHandle(ref, () => ({
-    toggleAnimation(isOn: boolean) {
-      setAnimation(isOn);
+    toggleTransition(isOn: boolean) {
+      setTransition(isOn);
     }
   }));
 
   const Icon = direction === 'left' ? Left : Right;
 
   useEffect(() => {
-    if (animation) {
+    if (transition) {
       timer.current = setTimeout(() => {
-        setAnimation(false)
+        setTransition(false)
       }, 200)
     }
 
@@ -39,7 +39,7 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
       clearTimeout(timer.current);
     }
 
-  }, [animation]);
+  }, [transition]);
 
 
   const handleClick = (direction: Direction) => {
@@ -72,7 +72,7 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
         hover:before:sg-opacity-60
         sg-z-10
         ${className}
-        ${animation ? 'sg-animate' : ''}
+        ${transition ? 'sg-animate' : ''}
       `}
     >
       <div

@@ -1,10 +1,10 @@
-import { GalleryImage, TransitionAnimation, RenderImage } from '../types';
+import { GalleryImage, TransitionType, RenderImage } from '../types';
 
 export interface Props<T> {
   onClose: VoidFunction;
   images: GalleryImage<T>[];
   activeIndex?: number;
-  animation?: TransitionAnimation;
+  transition?: TransitionType;
   renderFullImage: RenderImage<T>;
 }
 

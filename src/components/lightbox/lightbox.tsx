@@ -12,7 +12,7 @@ import './lightbox.css';
 const objectKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>
 
 export function Lightbox<T>(props: Props<T>) {
-  const { animation = 'slide', renderFullImage } = props;
+  const { transition = 'slide', renderFullImage } = props;
   const containerRef = useRef<null | HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const [direction, setDirection] = useState<Direction>('right');
@@ -39,12 +39,12 @@ export function Lightbox<T>(props: Props<T>) {
 
   const hasSomeImagesTitle = props.images.some(image => Boolean(image.title));
 
-  const getAnimationClassName = (state: TransitionState | null) => {
-    if (state && animation === 'slide') {
+  const getTransitionClassName = (state: TransitionState | null) => {
+    if (state && transition === 'slide') {
       return `sg-slide-${direction}-${state}`;
     }
     
-    if (state && animation === 'fade') {
+    if (state && transition === 'fade') {
       return `sg-fade-${state}`;
     }
 
@@ -88,13 +88,13 @@ export function Lightbox<T>(props: Props<T>) {
   }, [isTransitioning]);
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
-    if (animation !== 'none' && isTransitioning) return;
+    if (transition !== 'none' && isTransitioning) return;
 
-    arrowRefs[newDirection].current?.toggleAnimation(true);
+    arrowRefs[newDirection].current?.toggleTransition(true);
 
     setIsTransitioning(true);
 
-    if (animation === 'none') {
+    if (transition === 'none') {
       setVisibleImages(state => ({
         ...state,
         currentImage: props.images[newIndex]
@@ -126,7 +126,7 @@ export function Lightbox<T>(props: Props<T>) {
     setDirection(newDirection)
   };
 
-  const handleAnimationEnd = () => {
+  const handleTransitionEnd = () => {
     if (isTransitioning) {
       setIsTransitioning(false);
 
@@ -148,6 +148,7 @@ export function Lightbox<T>(props: Props<T>) {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const keyCode = event.code;
+
     if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Space'].indexOf(keyCode) !== -1) {
       event.preventDefault();
     }
@@ -181,7 +182,7 @@ export function Lightbox<T>(props: Props<T>) {
   ) : null;
 
   const renderImages = () => {
-    if (animation === 'none') {
+    if (transition === 'none') {
       return (
         <PreviewImage
           showTitle={hasSomeImagesTitle}
@@ -197,8 +198,8 @@ export function Lightbox<T>(props: Props<T>) {
         showTitle={hasSomeImagesTitle}
         renderImage={renderFullImage}
         image={visibleImages[key]}
-        onTransitionEnd={handleAnimationEnd}
-        transitionClass={getAnimationClassName(transitionState[key])}
+        onTransitionEnd={handleTransitionEnd}
+        transitionClass={getTransitionClassName(transitionState[key])}
       />
     ))
   }
