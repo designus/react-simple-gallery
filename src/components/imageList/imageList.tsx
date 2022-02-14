@@ -1,9 +1,8 @@
 
   
 import React, { useState } from 'react';
-import classNames from 'classnames';
 import { Lightbox } from '../lightbox';
-import { GalleryImage, ImageSource, RenderImage, TransitionAnimation } from '../types';
+import { GalleryImage, ImageSource, RenderImage, TransitionType } from '../types';
 
 import './imageList.css';
 
@@ -33,7 +32,7 @@ const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
 export interface Props<T extends ImageSource> {
   images: GalleryImage<T>[];
   className?: string;
-  animation?: TransitionAnimation;
+  transition?: TransitionType;
   renderThumbImage?: RenderImage<T>;
   renderFullImage?: RenderImage<T>;
 }
@@ -42,7 +41,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
   const {
     images = [],
     className = '',
-    animation = 'slide',
+    transition,
     renderThumbImage = defaultRenderThumbImage,
     renderFullImage = defaultRenderFullImage
   } = props;
@@ -61,7 +60,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
     <>
       <div
         role="list"
-        className={classNames(className, { [defaultLayoutClasses]: !className })}
+        className={`${className} ${!className ? defaultLayoutClasses : ''}`}
       >
         {images.map((image, index) => {
           return (
@@ -83,7 +82,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
         <Lightbox
           onClose={handleLightboxClose}
           images={images}
-          animation={animation}
+          transition={transition}
           activeIndex={activeIndex}
           renderFullImage={renderFullImage}
         />

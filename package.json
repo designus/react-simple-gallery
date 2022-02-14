@@ -14,29 +14,48 @@
   "files": [
     "/dist"
   ],
-  "types": "dist/index.d.ts",
-  "main": "./dist/react-simple-gallery.umd.js",
-  "module": "./dist/react-simple-gallery.es.js",
+  "types": "dist/react/index.d.ts",
+  "main": "./dist/react/react-simple-gallery.umd.js",
+  "module": "./dist/react/react-simple-gallery.es.js",
   "exports": {
     ".": {
-      "import": "./dist/react-simple-gallery.es.js",
-      "require": "./dist/react-simple-gallery.umd.js"
+      "import": "./dist/react/react-simple-gallery.es.js",
+      "require": "./dist/react/react-simple-gallery.umd.js"
+    },
+    "./react": {
+      "import": "./dist/react/react-simple-gallery.es.js",
+      "require": "./dist/react/react-simple-gallery.umd.js"
+    },
+    "./preact": {
+      "import": "./dist/preact/react-simple-gallery.es.js",
+      "require": "./dist/preact/react-simple-gallery.umd.js"
+    }    
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/react/index.d.ts"
+      ],
+      "react": [
+        "./dist/react/index.d.ts"
+      ],
+      "preact": [
+        "./dist/preact/index.d.ts"
+      ]
     }
   },
-  "author": "Martynas Viskontas",
+  "author": "Martynas Viskontas (martynas.viskontas@gmail.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/designus/react-simple-gallery/issues"
   },
   "homepage": "https://github.com/designus/react-simple-gallery#readme",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "dev": "vite --config config/vite-react.config.ts",
+    "build-react": "tsc --noEmit && vite --config config/vite-react.config.ts build",
+    "build-preact": "tsc --noEmit && vite --config config/vite-preact.config.ts build",
+    "build": "rm -rf dist && npm run build-react && npm run build-preact",
     "preview": "vite preview"
-  },
-  "dependencies": {
-    "classnames": "^2.3.1",
-    "react-transition-group": "^4.4.2"
   },
   "peerDependencies": {
     "react": "^17.0.1",
@@ -54,6 +73,7 @@
     "css.escape": "^1.5.1",
     "postcss": "^8.4.5",
     "postcss-nested": "^5.0.6",
+    "preact": "^10.6.5",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "tailwindcss": "^3.0.13",
