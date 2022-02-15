@@ -14,7 +14,7 @@ interface Props {
 export interface PublicChildMethods {
   toggleTransition: (isOn: boolean) => void;
 }
-  
+
 export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
   const { className, direction, hasAdjustedPosition, onClick } = props;
   const timer = useRef<number | undefined>();
@@ -31,20 +31,18 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
   useEffect(() => {
     if (transition) {
       timer.current = setTimeout(() => {
-        setTransition(false)
-      }, 200)
+        setTransition(false);
+      }, 200);
     }
 
     return () => {
       clearTimeout(timer.current);
-    }
-
+    };
   }, [transition]);
 
-
-  const handleClick = (direction: Direction) => {
-    onClick(direction);
-  }
+  const handleClick = (newDirection: Direction) => {
+    onClick(newDirection);
+  };
 
   return (
     <div
@@ -78,6 +76,11 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
       <div
         aria-label={`${direction} arrow`}
         onClick={() => handleClick(direction)}
+        onKeyDown={(e) => {
+          if (e.code === 'Enter') {
+            handleClick(direction);
+          }
+        }}
         role="button"
         tabIndex={0}
         className={`

@@ -9,7 +9,7 @@ import { Props, TransitionState, Images } from './types';
 
 import './lightbox.css';
 
-const objectKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>
+const objectKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>;
 
 export function Lightbox<T>(props: Props<T>) {
   const { transition = 'slide', renderFullImage } = props;
@@ -43,7 +43,7 @@ export function Lightbox<T>(props: Props<T>) {
     if (state && transition === 'slide') {
       return `sg-slide-${direction}-${state}`;
     }
-    
+
     if (state && transition === 'fade') {
       return `sg-fade-${state}`;
     }
@@ -64,27 +64,26 @@ export function Lightbox<T>(props: Props<T>) {
   useEffect(() => {
     if (isTransitioning) {
       timer.current = setTimeout(() => {
-        setTransitionState(state => {
+        setTransitionState((state) => {
           if (state.nextImage === 'entering') {
             return {
               nextImage: 'entered',
               currentImage: 'exited'
-            }
-          } else {
-            return {
-              currentImage: 'entered',
-              nextImage: 'exited'
-            }
+            };
           }
-        })
-      }, 0)
+          return {
+            currentImage: 'entered',
+            nextImage: 'exited'
+          };
+        });
+      }, 0);
     } else {
       clearTimeout(timer.current);
     }
 
     return () => {
       clearTimeout(timer.current);
-    }
+    };
   }, [isTransitioning]);
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
@@ -95,7 +94,7 @@ export function Lightbox<T>(props: Props<T>) {
     setIsTransitioning(true);
 
     if (transition === 'none') {
-      setVisibleImages(state => ({
+      setVisibleImages((state) => ({
         ...state,
         currentImage: props.images[newIndex]
       }));
@@ -105,7 +104,7 @@ export function Lightbox<T>(props: Props<T>) {
         currentImage: 'entering'
       });
 
-      setVisibleImages(state => ({
+      setVisibleImages((state) => ({
         currentImage: props.images[newIndex],
         nextImage: state.nextImage
       }));
@@ -115,7 +114,7 @@ export function Lightbox<T>(props: Props<T>) {
         currentImage: 'exiting'
       });
 
-      setVisibleImages(state => ({
+      setVisibleImages((state) => ({
         currentImage: state.currentImage,
         nextImage: props.images[newIndex]
       }));
@@ -123,7 +122,7 @@ export function Lightbox<T>(props: Props<T>) {
 
     setActiveIndex(newIndex);
 
-    setDirection(newDirection)
+    setDirection(newDirection);
   };
 
   const handleTransitionEnd = () => {
@@ -131,14 +130,14 @@ export function Lightbox<T>(props: Props<T>) {
       setIsTransitioning(false);
 
       if (transitionState.nextImage === 'entered') {
-        setVisibleImages(state => ({ nextImage: state.nextImage, currentImage: null }));
+        setVisibleImages((state) => ({ nextImage: state.nextImage, currentImage: null }));
       } else {
-        setVisibleImages(state => ({ currentImage: state.currentImage, nextImage: null }));
+        setVisibleImages((state) => ({ currentImage: state.currentImage, nextImage: null }));
       }
 
-      setTransitionState({ nextImage: '', currentImage: '' })
+      setTransitionState({ nextImage: '', currentImage: '' });
     }
-  }
+  };
 
   const handleClose = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
@@ -162,7 +161,7 @@ export function Lightbox<T>(props: Props<T>) {
     }
   };
 
-  const renderArrows = () => props.images.length > 1 ? (
+  const renderArrows = () => (props.images.length > 1 ? (
     <div className="sg-text-white sg-h-full sg-relative sg-w-full sg-text-5xl sm:sg-text-6xl sg-flex sg-flex-col sg-justify-center sg-select-none">
       <Arrow
         className="sg-left-0 hover:before:sg-bg-gradient-to-r"
@@ -179,7 +178,7 @@ export function Lightbox<T>(props: Props<T>) {
         ref={arrowRefs.right}
       />
     </div>
-  ) : null;
+  ) : null);
 
   const renderImages = () => {
     if (transition === 'none') {
@@ -189,10 +188,10 @@ export function Lightbox<T>(props: Props<T>) {
           renderImage={renderFullImage}
           image={visibleImages.currentImage}
         />
-      )
+      );
     }
 
-    return objectKeys(visibleImages).map(key => (
+    return objectKeys(visibleImages).map((key) => (
       <PreviewImage
         key={key}
         showTitle={hasSomeImagesTitle}
@@ -201,13 +200,12 @@ export function Lightbox<T>(props: Props<T>) {
         onTransitionEnd={handleTransitionEnd}
         transitionClass={getTransitionClassName(transitionState[key])}
       />
-    ))
-  }
+    ));
+  };
 
   const renderModal = () => (
     <div
       role="dialog"
-      tabIndex={-1}
       aria-label="Image modal"
       className={`
         sg-modal
@@ -231,11 +229,15 @@ export function Lightbox<T>(props: Props<T>) {
         before:-sg-z-10
         before:sg-bg-black
       `}
-      onKeyDown={handleKeyDown}
-      onMouseDown={handleClose}
-      ref={containerRef}
     >
-      <div className="sg-w-full sg-h-full sg-relative">
+      <div
+        role="presentation"
+        tabIndex={-1}
+        ref={containerRef}
+        onKeyDown={handleKeyDown}
+        onMouseDown={handleClose}
+        className="sg-w-full sg-h-full sg-relative"
+      >
         <CloseButton onClose={props.onClose} />
         {renderImages()}
         {renderArrows()}
@@ -247,4 +249,4 @@ export function Lightbox<T>(props: Props<T>) {
     renderModal(),
     document.body
   );
-};
+}
