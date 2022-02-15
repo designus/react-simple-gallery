@@ -55,7 +55,8 @@
     "build-react": "tsc --noEmit && vite --config config/vite-react.config.ts build",
     "build-preact": "tsc --noEmit && vite --config config/vite-preact.config.ts build",
     "build": "rm -rf dist && npm run build-react && npm run build-preact",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "eslint": "eslint src --fix"
   },
   "peerDependencies": {
     "react": "^17.0.1",
