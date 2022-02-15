@@ -54,6 +54,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
 
   const defaultLayoutClasses = 'sg-gallery-list sg-auto-rows-fr sg-grid sg-gap-2 sg-grid-cols-2 sm:sg-grid-cols-3 md:sg-grid-cols-4';
 
+
   const handleKeyDown = (index: number) => () => {
     setIsOpen(true);
     setActiveIndex(index);
