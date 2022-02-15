@@ -51,13 +51,14 @@
   },
   "homepage": "https://github.com/designus/react-simple-gallery#readme",
   "scripts": {
-    "prepush": "npm run lint",
     "dev": "vite --config config/vite-react.config.ts",
     "build-react": "tsc --noEmit && vite --config config/vite-react.config.ts build",
     "build-preact": "tsc --noEmit && vite --config config/vite-preact.config.ts build",
     "build": "rm -rf dist && npm run build-react && npm run build-preact",
     "preview": "vite preview",
-    "lint": "eslint src --fix"
+    "lint": "eslint src --fix",
+    "prepare": "husky install",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "peerDependencies": {
     "react": "^17.0.1",
