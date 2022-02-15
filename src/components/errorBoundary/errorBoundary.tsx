@@ -12,14 +12,14 @@ export class ErrorBoundary extends React.Component<Props, State> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: unknown) {
+  static getDerivedStateFromError() {
     return {
       hasError: true
     };
   }
 
   componentDidCatch(error: unknown) {
-    console.error('Error', error)
+    console.error('Error', error);
   }
 
   render() {
@@ -27,6 +27,6 @@ export class ErrorBoundary extends React.Component<Props, State> {
       return <h1>Something went wrong displaying your gallery.</h1>;
     }
 
-    return this.props.children; 
+    return this.props.children;
   }
 }

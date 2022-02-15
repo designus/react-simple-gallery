@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ErrorBoundary } from '../errorBoundary';
 import { ImageSource } from '../types';
@@ -12,4 +11,4 @@ export function Gallery<T extends ImageSource>(props: Props<T>) {
       <ImageList {...props} />
     </ErrorBoundary>
   );
-};
+}
