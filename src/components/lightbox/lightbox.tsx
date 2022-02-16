@@ -152,9 +152,9 @@ export function Lightbox<T>(props: Props<T>) {
       event.preventDefault();
     }
 
-    if (keyCode === 'ArrowLeft') {
+    if (keyCode === 'ArrowLeft' && !isTransitioning) {
       handleMove(prevIndex, 'left');
-    } else if (keyCode === 'ArrowRight') {
+    } else if (keyCode === 'ArrowRight' && !isTransitioning) {
       handleMove(nextIndex, 'right');
     } else if (keyCode === 'Escape') {
       props.onClose();
