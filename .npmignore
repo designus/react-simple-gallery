@@ -10,3 +10,4 @@ config
 .eslintignore
 jest.config.ts
 coverage
+__mocks__

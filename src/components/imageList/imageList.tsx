@@ -66,9 +66,10 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
         className={`${className} ${!className ? defaultLayoutClasses : ''}`}
       >
         {images.map((image, index) => (
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
           <div
             className="sg-gallery-item sg-cursor-pointer"
-            role="presentation"
+            role="listitem"
             key={image.id ?? index}
             onKeyDown={handleKeyDown(index)}
             onClick={handleKeyDown(index)}

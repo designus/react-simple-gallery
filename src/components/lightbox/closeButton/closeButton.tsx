@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import CloseIcon from './close-icon.svg?component';
+import { ReactComponent as CloseIcon } from './close-icon.svg';
 
 interface Props {
   onClose: VoidFunction;

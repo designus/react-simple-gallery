@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Direction } from '../../types';
-import Left from './left-icon.svg?component';
-import Right from './right-icon.svg?component';
+import { ReactComponent as Left } from './left-icon.svg';
+import { ReactComponent as Right } from './right-icon.svg';
 import './arrow.css';
 
 interface Props {

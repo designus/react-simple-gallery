@@ -3,7 +3,7 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  ignorePatterns: ['src/App.tsx', 'src/main.tsx', 'src/vite-env.d.ts'],
+  ignorePatterns: ['src/App.tsx', 'src/main.tsx', 'src/vite-env.d.ts', 'src/index.d.ts'],
   extends: [
     'plugin:react/recommended',
     'airbnb',
