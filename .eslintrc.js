@@ -32,6 +32,7 @@ module.exports = {
     'react/destructuring-assignment': 0,
     'react/require-default-props': 0,
     'react/jsx-props-no-spreading': 0,
-    'no-console': ['error', { allow: ['warn', 'error'] }]
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'max-len': 150
   },
 };

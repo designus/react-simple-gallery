@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1645199954492" clover="3.2.0">
-  <project timestamp="1645199954492" name="All files">
-    <metrics statements="506" coveredstatements="124" conditionals="8" coveredconditionals="4" methods="8" coveredmethods="3" elements="522" coveredelements="131" complexity="0" loc="506" ncloc="506" packages="5" files="9" classes="9"/>
-    <package name="imageList">
+<coverage generated="1645200935560" clover="3.2.0">
+  <project timestamp="1645200935561" name="All files">
+    <metrics statements="514" coveredstatements="132" conditionals="12" coveredconditionals="8" methods="9" coveredmethods="4" elements="535" coveredelements="144" complexity="0" loc="514" ncloc="514" packages="6" files="11" classes="11"/>
+    <package name="components.imageList">
       <metrics statements="92" coveredstatements="68" conditionals="8" coveredconditionals="4" methods="5" coveredmethods="3"/>
       <file name="imageList.tsx" path="/home/martynas/Desktop/projects/react-simple-gallery/src/components/imageList/imageList.tsx">
         <metrics statements="92" coveredstatements="68" conditionals="8" coveredconditionals="4" methods="5" coveredmethods="3"/>
@@ -100,7 +100,7 @@
         <line num="92" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="lightbox">
+    <package name="components.lightbox">
       <metrics statements="253" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.ts" path="/home/martynas/Desktop/projects/react-simple-gallery/src/components/lightbox/index.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -362,7 +362,7 @@
         <line num="252" count="0" type="stmt"/>
       </file>
     </package>
-    <package name="lightbox.arrow">
+    <package name="components.lightbox.arrow">
       <metrics statements="110" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="arrow.tsx" path="/home/martynas/Desktop/projects/react-simple-gallery/src/components/lightbox/arrow/arrow.tsx">
         <metrics statements="109" coveredstatements="19" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -481,7 +481,7 @@
         <line num="1" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="lightbox.closeButton">
+    <package name="components.lightbox.closeButton">
       <metrics statements="20" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="closeButton.tsx" path="/home/martynas/Desktop/projects/react-simple-gallery/src/components/lightbox/closeButton/closeButton.tsx">
         <metrics statements="19" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
@@ -510,7 +510,7 @@
         <line num="1" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="lightbox.previewImage">
+    <package name="components.lightbox.previewImage">
       <metrics statements="31" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
       <file name="index.ts" path="/home/martynas/Desktop/projects/react-simple-gallery/src/components/lightbox/previewImage/index.ts">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
@@ -548,6 +548,23 @@
         <line num="28" count="0" type="stmt"/>
         <line num="29" count="0" type="stmt"/>
         <line num="30" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="8" coveredstatements="8" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
+      <file name="index.ts" path="/home/martynas/Desktop/projects/react-simple-gallery/src/utils/index.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+      <file name="testing.ts" path="/home/martynas/Desktop/projects/react-simple-gallery/src/utils/testing.ts">
+        <metrics statements="7" coveredstatements="7" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="cond" truecount="2" falsecount="0"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="7" count="1" type="stmt"/>
       </file>
     </package>
   </project>
