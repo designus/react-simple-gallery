@@ -4,15 +4,28 @@ import { createPortal } from 'react-dom';
 import { Arrow, PublicChildMethods } from './arrow';
 import { PreviewImage } from './previewImage';
 import { CloseButton } from './closeButton';
-import { GalleryImage, Direction } from '../types';
+import { GalleryImage, Direction, ImageSource } from '../types';
 import { Props, TransitionState, Images } from './types';
 
 import './lightbox.css';
 
 const objectKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>;
 
+const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
+  if (typeof image.full !== 'string') {
+    throw new Error('Please specify renderFullImage parameter');
+  }
+
+  return (
+    <img
+      src={image.full}
+      alt={image.alt || ''}
+    />
+  );
+};
+
 export function Lightbox<T>(props: Props<T>) {
-  const { transition = 'slide', renderFullImage } = props;
+  const { transition = 'slide', renderFullImage = defaultRenderFullImage } = props;
   const containerRef = useRef<null | HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const [direction, setDirection] = useState<Direction>('right');

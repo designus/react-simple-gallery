@@ -106,4 +106,16 @@ describe('ImageList', () => {
 
     expect(imageSources).toEqual(['http://localhost/thumb_0.jpg', 'http://localhost/thumb_1.jpg']);
   });
+
+  it('should apply different className when provided', () => {
+    const mockedImages = getMockedImages(1);
+    render(
+      <ImageList
+        images={mockedImages}
+        className="other-layout"
+      />
+    );
+
+    expect(screen.getByRole('list')).toHaveClass('other-layout');
+  });
 });

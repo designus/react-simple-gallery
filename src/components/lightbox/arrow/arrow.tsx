@@ -74,6 +74,7 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
       `}
     >
       <div
+        data-testid={`${direction}-arrow`}
         aria-label={`${direction} arrow`}
         onClick={() => handleClick(direction)}
         onKeyDown={(e) => {
