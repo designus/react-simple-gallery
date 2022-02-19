@@ -6,6 +6,7 @@ interface Props {
 
 export const CloseButton: FC<Props> = props => (
   <div
+    data-testid="close-button"
     className="sg-absolute sg-z-20 sg-right-10px sg-top-10px sg-flex sg-justify-center sg-items-center sg-bg-black sg-bg-opacity-30 sg-rounded-full sg-cursor-pointer"
     role="button"
     tabIndex={0}

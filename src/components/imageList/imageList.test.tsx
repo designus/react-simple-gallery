@@ -34,7 +34,7 @@ describe('ImageList', () => {
     expect(container.getElementsByClassName('custom-wrapper').length).toBe(2);
   });
 
-  it('should open full image in a lightbox when clicking on the thumb image', () => {
+  it('should open image lightbox when clicking on the thumb image', () => {
     const mockedImages = getMockedImages(4);
     render(<ImageList images={mockedImages} />);
     const elements = screen.getAllByRole('listitem');
@@ -46,8 +46,15 @@ describe('ImageList', () => {
     expect(dialog.querySelector('img')?.src).toBe(`http://localhost/full_${imageIndex}.jpg`);
   });
 
-  it('should close full image when clicking on the close button', () => {
-    
+  it('should close image lightbox when clicking on the close button', () => {
+    const mockedImages = getMockedImages(4);
+    render(<ImageList images={mockedImages} />);
+    const elements = screen.getAllByRole('listitem');
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    fireEvent.click(elements[0]);
+    expect(screen.queryByRole('dialog')).toBeInTheDocument();
+    fireEvent.click(screen.getByTestId('close-button'));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('should throw an exception when different image structure is used without providing renderThumbImage parameter', () => {
