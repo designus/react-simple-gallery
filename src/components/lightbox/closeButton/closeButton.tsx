@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { ReactComponent as CloseIcon } from './close-icon.svg';
 
 interface Props {
   onClose: VoidFunction;
@@ -14,6 +13,15 @@ export const CloseButton: FC<Props> = props => (
     onKeyDown={props.onClose}
     onClick={props.onClose}
   >
-    <CloseIcon className="sg-fill-white sg-w-10 sg-h-10 sg-mr-2px sm:sg-w-12 sm:sg-h-12" />
+    <svg
+      className="sg-fill-white sg-w-10 sg-h-10 sg-mr-2px sm:sg-w-12 sm:sg-h-12"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+      width="1024"
+      height="1024"
+      viewBox="0 0 1024 1024"
+    >
+      <path d="M321.6 766.4c12.48 12.48 32.768 12.48 45.248 0l177.152-177.152 177.152 177.152c12.48 12.48 32.768 12.48 45.248 0s12.48-32.768 0-45.248l-177.152-177.152 177.152-177.152c12.48-12.48 12.48-32.768 0-45.248s-32.768-12.48-45.248 0l-177.152 177.152-177.152-177.152c-12.48-12.48-32.768-12.48-45.248 0s-12.48 32.768 0 45.248l177.152 177.152-177.152 177.152c-12.48 12.48-12.48 32.768 0 45.248z" />
+    </svg>
   </div>
 );

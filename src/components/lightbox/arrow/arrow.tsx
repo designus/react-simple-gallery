@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import { Direction } from '../../types';
-import { ReactComponent as Left } from './left-icon.svg';
-import { ReactComponent as Right } from './right-icon.svg';
+import { LeftIcon } from './leftIcon';
+import { RightIcon } from './rightIcon';
 import './arrow.css';
 
 interface Props {
@@ -26,7 +26,7 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
     }
   }));
 
-  const Icon = direction === 'left' ? Left : Right;
+  const Icon = direction === 'left' ? LeftIcon : RightIcon;
 
   useEffect(() => {
     if (transition) {
@@ -95,14 +95,7 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
           ${hasAdjustedPosition ? 'sg-transform sg--translate-y-18px sm:sg--translate-y-23px' : ''}
         `}
       >
-        <Icon className={`
-          sg-fill-gray-700
-          sg-w-36px
-          sg-h-36px
-          sm:sg-w-46px
-          sm:sg-h-46px
-        `}
-        />
+        <Icon className="sg-fill-gray-700 sg-w-36px sg-h-36px sm:sg-w-46px sm:sg-h-46px" />
       </div>
     </div>
   );
