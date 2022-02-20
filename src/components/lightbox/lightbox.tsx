@@ -89,7 +89,7 @@ export function Lightbox<T>(props: Props<T>) {
             nextImage: 'exited'
           };
         });
-      }, 0);
+      }, 50);
     } else {
       clearTimeout(timer.current);
     }
