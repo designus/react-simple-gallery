@@ -220,28 +220,8 @@ export function Lightbox<T>(props: Props<T>) {
     <div
       role="dialog"
       aria-label="Image modal"
-      className={`
-        sg-modal
-        sg-fixed
-        sg-top-0
-        sg-bottom-0
-        sg-left-0
-        sg-right-0
-        sg-h-screen
-        sg-z-50
-        sg-flex
-        sg-justify-center
-        sg-items-center
-        sg-flex-col
-        before:sg-absolute
-        before:sg-top-0
-        before:sg-bottom-0
-        before:sg-left-0
-        before:sg-right-0
-        before:sg-h-screen
-        before:-sg-z-10
-        before:sg-bg-black
-      `}
+      className={`sg-modal sg-fixed sg-top-0 sg-bottom-0 sg-left-0 sg-right-0 sg-h-screen sg-z-50 sg-flex sg-justify-center sg-items-center sg-flex-col before:sg-absolute before:sg-top-0 
+      before:sg-bottom-0 before:sg-left-0 before:sg-right-0 before:sg-h-screen before:-sg-z-10 before:sg-bg-black`}
     >
       <div
         role="presentation"

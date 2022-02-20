@@ -3,7 +3,17 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { Lightbox } from './lightbox';
 import { getMockedImages } from '../../utils';
 
+function triggerTransitionEnd(element: HTMLElement | null) {
+  const event = document.createEvent('Event');
+  event.initEvent('transitionend', true, true);
+  element?.dispatchEvent(event);
+}
+
 describe('Lightbox', () => {
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('should render component', () => {
     const mockedImages = getMockedImages(3);
     const onClose = jest.fn();
@@ -88,6 +98,96 @@ describe('Lightbox', () => {
       const image3 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image3.src).toBe('http://localhost/full_1.jpg');
       fireEvent.click(leftArrow);
+      const image4 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image4.src).toBe('http://localhost/full_0.jpg');
+    });
+  });
+
+  describe('navigation when transition = fade', () => {
+    it('should navigate to the right by clicking on the right arrow', async () => {
+      const mockedImages = getMockedImages(3);
+      const onClose = jest.fn();
+      jest.useFakeTimers();
+
+      render(
+        <Lightbox
+          images={mockedImages}
+          transition="fade"
+          activeIndex={0}
+          onClose={onClose}
+          renderFullImage={image => (
+            <img
+              data-testid="full-image"
+              alt="full"
+              src={image.full}
+            />
+          )}
+        />
+      );
+
+      const rightArrow = screen.getByTestId('right-arrow');
+      const image1 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image1.src).toBe('http://localhost/full_0.jpg');
+
+      fireEvent.click(rightArrow);
+      jest.runAllTimers();
+      triggerTransitionEnd(image1.parentElement);
+      const image2 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image2.src).toBe('http://localhost/full_1.jpg');
+
+      fireEvent.click(rightArrow);
+      jest.runAllTimers();
+      triggerTransitionEnd(image2.parentElement);
+      const image3 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image3.src).toBe('http://localhost/full_2.jpg');
+
+      fireEvent.click(rightArrow);
+      jest.runAllTimers();
+      triggerTransitionEnd(image3.parentElement);
+      const image4 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image4.src).toBe('http://localhost/full_0.jpg');
+    });
+
+    it('should navigate to the left by clicking on the left arrow', async () => {
+      const mockedImages = getMockedImages(3);
+      const onClose = jest.fn();
+      jest.useFakeTimers();
+
+      render(
+        <Lightbox
+          images={mockedImages}
+          transition="fade"
+          activeIndex={0}
+          onClose={onClose}
+          renderFullImage={image => (
+            <img
+              data-testid="full-image"
+              alt="full"
+              src={image.full}
+            />
+          )}
+        />
+      );
+
+      const rightArrow = screen.getByTestId('left-arrow');
+      const image1 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image1.src).toBe('http://localhost/full_0.jpg');
+
+      fireEvent.click(rightArrow);
+      jest.runAllTimers();
+      triggerTransitionEnd(image1.parentElement);
+      const image2 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image2.src).toBe('http://localhost/full_2.jpg');
+
+      fireEvent.click(rightArrow);
+      jest.runAllTimers();
+      triggerTransitionEnd(image2.parentElement);
+      const image3 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image3.src).toBe('http://localhost/full_1.jpg');
+
+      fireEvent.click(rightArrow);
+      jest.runAllTimers();
+      triggerTransitionEnd(image3.parentElement);
       const image4 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image4.src).toBe('http://localhost/full_0.jpg');
     });
