@@ -57,5 +57,39 @@ describe('Lightbox', () => {
       const image4 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image4.src).toBe('http://localhost/full_0.jpg');
     });
+
+    it('should navigate to the left by clicking on the left arrow', async () => {
+      const mockedImages = getMockedImages(3);
+      const onClose = jest.fn();
+
+      render(
+        <Lightbox
+          images={mockedImages}
+          transition="none"
+          activeIndex={0}
+          onClose={onClose}
+          renderFullImage={image => (
+            <img
+              data-testid="full-image"
+              alt="full"
+              src={image.full}
+            />
+          )}
+        />
+      );
+
+      const leftArrow = screen.getByTestId('left-arrow');
+      const image1 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image1.src).toBe('http://localhost/full_0.jpg');
+      fireEvent.click(leftArrow);
+      const image2 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image2.src).toBe('http://localhost/full_2.jpg');
+      fireEvent.click(leftArrow);
+      const image3 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image3.src).toBe('http://localhost/full_1.jpg');
+      fireEvent.click(leftArrow);
+      const image4 = await screen.findByTestId<HTMLImageElement>('full-image');
+      expect(image4.src).toBe('http://localhost/full_0.jpg');
+    });
   });
 });

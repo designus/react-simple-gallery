@@ -59,7 +59,7 @@
     "preview": "vite preview",
     "lint": "eslint src --fix",
     "prepare": "husky install",
-    "test": "jest"
+    "test": "jest --verbose"
   },
   "peerDependencies": {
     "react": "^17.0.1",
