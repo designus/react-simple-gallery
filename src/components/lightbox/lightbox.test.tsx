@@ -4,12 +4,18 @@ import { Lightbox } from './lightbox';
 import { getMockedImages } from '../../utils';
 
 function triggerTransitionEnd(element: HTMLElement | null) {
-  const event = document.createEvent('Event');
-  event.initEvent('transitionend', true, true);
+  const event = new Event('transitionend', {
+    bubbles: true,
+    cancelable: true
+  });
   element?.dispatchEvent(event);
 }
 
 describe('Lightbox', () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
   afterEach(() => {
     jest.useRealTimers();
   });
@@ -107,7 +113,6 @@ describe('Lightbox', () => {
     it('should navigate to the right by clicking on the right arrow', async () => {
       const mockedImages = getMockedImages(3);
       const onClose = jest.fn();
-      jest.useFakeTimers();
 
       render(
         <Lightbox
@@ -157,7 +162,6 @@ describe('Lightbox', () => {
     it('should navigate to the left by clicking on the left arrow', async () => {
       const mockedImages = getMockedImages(3);
       const onClose = jest.fn();
-      jest.useFakeTimers();
 
       render(
         <Lightbox
