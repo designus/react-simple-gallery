@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 import { Lightbox } from './lightbox';
 import { getMockedImages } from '../../utils';
 
@@ -105,7 +104,7 @@ describe('Lightbox', () => {
   });
 
   describe('navigation when transition = fade', () => {
-    it.skip('should navigate to the right by clicking on the right arrow', async () => {
+    it('should navigate to the right by clicking on the right arrow', async () => {
       const mockedImages = getMockedImages(3);
       const onClose = jest.fn();
       jest.useFakeTimers();
@@ -131,25 +130,31 @@ describe('Lightbox', () => {
       expect(image1.src).toBe('http://localhost/full_0.jpg');
 
       fireEvent.click(rightArrow);
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       triggerTransitionEnd(image1.parentElement);
       const image2 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image2.src).toBe('http://localhost/full_1.jpg');
 
       fireEvent.click(rightArrow);
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       triggerTransitionEnd(image2.parentElement);
       const image3 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image3.src).toBe('http://localhost/full_2.jpg');
 
       fireEvent.click(rightArrow);
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       triggerTransitionEnd(image3.parentElement);
       const image4 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image4.src).toBe('http://localhost/full_0.jpg');
     });
 
-    it.skip('should navigate to the left by clicking on the left arrow', async () => {
+    it('should navigate to the left by clicking on the left arrow', async () => {
       const mockedImages = getMockedImages(3);
       const onClose = jest.fn();
       jest.useFakeTimers();
@@ -175,19 +180,25 @@ describe('Lightbox', () => {
       expect(image1.src).toBe('http://localhost/full_0.jpg');
 
       fireEvent.click(leftArrow);
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       triggerTransitionEnd(image1.parentElement);
       const image2 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image2.src).toBe('http://localhost/full_2.jpg');
 
       fireEvent.click(leftArrow);
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       triggerTransitionEnd(image2.parentElement);
       const image3 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image3.src).toBe('http://localhost/full_1.jpg');
 
       fireEvent.click(leftArrow);
-      jest.runAllTimers();
+      act(() => {
+        jest.runAllTimers();
+      });
       triggerTransitionEnd(image3.parentElement);
       const image4 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image4.src).toBe('http://localhost/full_0.jpg');
