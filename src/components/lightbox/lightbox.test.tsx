@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { act } from 'react-dom/test-utils';
 import { Lightbox } from './lightbox';
 import { getMockedImages } from '../../utils';
 
@@ -169,27 +170,53 @@ describe('Lightbox', () => {
         />
       );
 
-      const rightArrow = screen.getByTestId('left-arrow');
+      const leftArrow = screen.getByTestId('left-arrow');
       const image1 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image1.src).toBe('http://localhost/full_0.jpg');
 
-      fireEvent.click(rightArrow);
+      fireEvent.click(leftArrow);
       jest.runAllTimers();
       triggerTransitionEnd(image1.parentElement);
       const image2 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image2.src).toBe('http://localhost/full_2.jpg');
 
-      fireEvent.click(rightArrow);
+      fireEvent.click(leftArrow);
       jest.runAllTimers();
       triggerTransitionEnd(image2.parentElement);
       const image3 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image3.src).toBe('http://localhost/full_1.jpg');
 
-      fireEvent.click(rightArrow);
+      fireEvent.click(leftArrow);
       jest.runAllTimers();
       triggerTransitionEnd(image3.parentElement);
       const image4 = await screen.findByTestId<HTMLImageElement>('full-image');
       expect(image4.src).toBe('http://localhost/full_0.jpg');
     });
+  });
+
+  it('should throw an exception when different image structure is used without providing renderFullImage parameter', () => {
+    const spy = jest.spyOn(console, 'error');
+    spy.mockImplementation(() => {});
+    const onClose = jest.fn();
+
+    const mockedImages = getMockedImages(2).map(image => ({
+      ...image,
+      thumb: {
+        url: image.thumb
+      },
+      full: {
+        url: image.full
+      }
+    }));
+
+    expect(() => render(
+      <Lightbox
+        onClose={onClose}
+        images={mockedImages}
+
+      />
+    )).toThrow('Please specify renderFullImage parameter');
+
+    spy.mockRestore();
   });
 });

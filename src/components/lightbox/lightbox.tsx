@@ -224,6 +224,7 @@ export function Lightbox<T>(props: Props<T>) {
       before:sg-bottom-0 before:sg-left-0 before:sg-right-0 before:sg-h-screen before:-sg-z-10 before:sg-bg-black`}
     >
       <div
+        data-testid="image-container"
         role="presentation"
         tabIndex={-1}
         ref={containerRef}
