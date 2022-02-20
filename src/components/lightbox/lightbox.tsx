@@ -104,38 +104,40 @@ export function Lightbox<T>(props: Props<T>) {
 
     arrowRefs[newDirection].current?.toggleTransition(true);
 
-    setIsTransitioning(true);
+    setActiveIndex(newIndex);
 
-    if (transition === 'none') {
+    setDirection(newDirection);
+
+    if (transition !== 'none') {
+      setIsTransitioning(true);
+
+      if (visibleImages.currentImage === null) {
+        setTransitionState({
+          nextImage: 'exiting',
+          currentImage: 'entering'
+        });
+
+        setVisibleImages((state) => ({
+          currentImage: props.images[newIndex],
+          nextImage: state.nextImage
+        }));
+      } else {
+        setTransitionState({
+          nextImage: 'entering',
+          currentImage: 'exiting'
+        });
+
+        setVisibleImages((state) => ({
+          currentImage: state.currentImage,
+          nextImage: props.images[newIndex]
+        }));
+      }
+    } else {
       setVisibleImages((state) => ({
         ...state,
         currentImage: props.images[newIndex]
       }));
-    } else if (visibleImages.currentImage === null) {
-      setTransitionState({
-        nextImage: 'exiting',
-        currentImage: 'entering'
-      });
-
-      setVisibleImages((state) => ({
-        currentImage: props.images[newIndex],
-        nextImage: state.nextImage
-      }));
-    } else {
-      setTransitionState({
-        nextImage: 'entering',
-        currentImage: 'exiting'
-      });
-
-      setVisibleImages((state) => ({
-        currentImage: state.currentImage,
-        nextImage: props.images[newIndex]
-      }));
     }
-
-    setActiveIndex(newIndex);
-
-    setDirection(newDirection);
   };
 
   const handleTransitionEnd = () => {

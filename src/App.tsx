@@ -20,7 +20,7 @@ function App() {
         <h1>Custom gallery</h1>
         <Gallery
           images={images}
-          transition="fade"
+          transition="none"
         />
       </div>
     )
