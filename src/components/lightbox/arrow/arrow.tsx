@@ -84,15 +84,7 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
         }}
         role="button"
         tabIndex={0}
-        className={`
-          sg-rounded-full
-          sg-bg-white
-          sg-bg-opacity-70
-          sg-relative
-          sg-hover:bg-opacity-100
-          sg-flex
-          sg-justify-center
-          sg-items-center
+        className={`sg-rounded-full sg-bg-white sg-bg-opacity-70 sg-relative sg-hover:bg-opacity-100 sg-flex sg-justify-center sg-items-center
           ${hasAdjustedPosition ? 'sg-transform sg--translate-y-18px sm:sg--translate-y-23px' : ''}
         `}
       >
