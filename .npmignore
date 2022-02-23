@@ -7,3 +7,8 @@ libInjectCss.ts
 public
 config
 .eslintrc.js
+.eslintignore
+jest.config.ts
+coverage
+__mocks__
+setupTests.ts

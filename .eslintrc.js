@@ -3,11 +3,12 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  ignorePatterns: ['src/App.tsx', 'src/main.tsx', 'src/vite-env.d.ts'],
+  ignorePatterns: ['src/App.tsx', 'src/main.tsx', 'src/vite-env.d.ts', 'src/index.d.ts'],
   extends: [
     'plugin:react/recommended',
     'airbnb',
-    'airbnb-typescript'
+    'airbnb-typescript',
+    'plugin:react-hooks/recommended'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -32,6 +33,7 @@ module.exports = {
     'react/destructuring-assignment': 0,
     'react/require-default-props': 0,
     'react/jsx-props-no-spreading': 0,
-    'no-console': ['error', { allow: ['warn', 'error'] }]
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'max-len': 0
   },
 };

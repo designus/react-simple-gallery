@@ -14,19 +14,6 @@ const defaultRenderThumbImage = (image: GalleryImage<ImageSource>) => {
   );
 };
 
-const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
-  if (typeof image.full !== 'string') {
-    throw new Error('Please specify renderFullImage parameter');
-  }
-
-  return (
-    <img
-      src={image.full}
-      alt={image.alt || ''}
-    />
-  );
-};
-
 export interface Props<T extends ImageSource> {
   images: GalleryImage<T>[];
   className?: string;
@@ -41,7 +28,7 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
     className = '',
     transition,
     renderThumbImage = defaultRenderThumbImage,
-    renderFullImage = defaultRenderFullImage,
+    renderFullImage,
   } = props;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -66,9 +53,10 @@ export function ImageList<T extends ImageSource>(props: Props<T>) {
         className={`${className} ${!className ? defaultLayoutClasses : ''}`}
       >
         {images.map((image, index) => (
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
           <div
             className="sg-gallery-item sg-cursor-pointer"
-            role="presentation"
+            role="listitem"
             key={image.id ?? index}
             onKeyDown={handleKeyDown(index)}
             onClick={handleKeyDown(index)}

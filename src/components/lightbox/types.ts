@@ -5,7 +5,7 @@ export interface Props<T> {
   images: GalleryImage<T>[];
   activeIndex?: number;
   transition?: TransitionType;
-  renderFullImage: RenderImage<T>;
+  renderFullImage?: RenderImage<T>;
 }
 
 export type TransitionState = 'exited' | 'exiting' | 'entered' | 'entering' | '';

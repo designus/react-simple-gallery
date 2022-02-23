@@ -4,20 +4,32 @@ import { createPortal } from 'react-dom';
 import { Arrow, PublicChildMethods } from './arrow';
 import { PreviewImage } from './previewImage';
 import { CloseButton } from './closeButton';
-import { GalleryImage, Direction } from '../types';
+import { GalleryImage, Direction, ImageSource } from '../types';
 import { Props, TransitionState, Images } from './types';
 
 import './lightbox.css';
 
 const objectKeys = Object.keys as <T extends object>(obj: T) => Array<keyof T>;
 
+const defaultRenderFullImage = (image: GalleryImage<ImageSource>) => {
+  if (typeof image.full !== 'string') {
+    throw new Error('Please specify renderFullImage parameter');
+  }
+
+  return (
+    <img
+      src={image.full}
+      alt={image.alt || ''}
+    />
+  );
+};
+
 export function Lightbox<T>(props: Props<T>) {
-  const { transition = 'slide', renderFullImage } = props;
+  const { transition = 'slide', renderFullImage = defaultRenderFullImage } = props;
   const containerRef = useRef<null | HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const [direction, setDirection] = useState<Direction>('right');
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const timer = useRef<number | undefined>();
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
@@ -63,7 +75,7 @@ export function Lightbox<T>(props: Props<T>) {
 
   useEffect(() => {
     if (isTransitioning) {
-      timer.current = setTimeout(() => {
+      setTimeout(() => {
         setTransitionState((state) => {
           if (state.nextImage === 'entering') {
             return {
@@ -76,14 +88,8 @@ export function Lightbox<T>(props: Props<T>) {
             nextImage: 'exited'
           };
         });
-      }, 0);
-    } else {
-      clearTimeout(timer.current);
+      }, 50);
     }
-
-    return () => {
-      clearTimeout(timer.current);
-    };
   }, [isTransitioning]);
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
@@ -91,38 +97,40 @@ export function Lightbox<T>(props: Props<T>) {
 
     arrowRefs[newDirection].current?.toggleTransition(true);
 
-    setIsTransitioning(true);
+    setActiveIndex(newIndex);
 
-    if (transition === 'none') {
+    setDirection(newDirection);
+
+    if (transition !== 'none') {
+      setIsTransitioning(true);
+
+      if (visibleImages.currentImage === null) {
+        setTransitionState({
+          nextImage: 'exiting',
+          currentImage: 'entering'
+        });
+
+        setVisibleImages((state) => ({
+          currentImage: props.images[newIndex],
+          nextImage: state.nextImage
+        }));
+      } else {
+        setTransitionState({
+          nextImage: 'entering',
+          currentImage: 'exiting'
+        });
+
+        setVisibleImages((state) => ({
+          currentImage: state.currentImage,
+          nextImage: props.images[newIndex]
+        }));
+      }
+    } else {
       setVisibleImages((state) => ({
         ...state,
         currentImage: props.images[newIndex]
       }));
-    } else if (visibleImages.currentImage === null) {
-      setTransitionState({
-        nextImage: 'exiting',
-        currentImage: 'entering'
-      });
-
-      setVisibleImages((state) => ({
-        currentImage: props.images[newIndex],
-        nextImage: state.nextImage
-      }));
-    } else {
-      setTransitionState({
-        nextImage: 'entering',
-        currentImage: 'exiting'
-      });
-
-      setVisibleImages((state) => ({
-        currentImage: state.currentImage,
-        nextImage: props.images[newIndex]
-      }));
     }
-
-    setActiveIndex(newIndex);
-
-    setDirection(newDirection);
   };
 
   const handleTransitionEnd = () => {
@@ -152,9 +160,9 @@ export function Lightbox<T>(props: Props<T>) {
       event.preventDefault();
     }
 
-    if (keyCode === 'ArrowLeft') {
+    if (keyCode === 'ArrowLeft' && !isTransitioning) {
       handleMove(prevIndex, 'left');
-    } else if (keyCode === 'ArrowRight') {
+    } else if (keyCode === 'ArrowRight' && !isTransitioning) {
       handleMove(nextIndex, 'right');
     } else if (keyCode === 'Escape') {
       props.onClose();
@@ -207,30 +215,11 @@ export function Lightbox<T>(props: Props<T>) {
     <div
       role="dialog"
       aria-label="Image modal"
-      className={`
-        sg-modal
-        sg-fixed
-        sg-top-0
-        sg-bottom-0
-        sg-left-0
-        sg-right-0
-        sg-h-screen
-        sg-z-50
-        sg-flex
-        sg-justify-center
-        sg-items-center
-        sg-flex-col
-        before:sg-absolute
-        before:sg-top-0
-        before:sg-bottom-0
-        before:sg-left-0
-        before:sg-right-0
-        before:sg-h-screen
-        before:-sg-z-10
-        before:sg-bg-black
-      `}
+      className={`sg-modal sg-fixed sg-top-0 sg-bottom-0 sg-left-0 sg-right-0 sg-h-screen sg-z-50 sg-flex sg-justify-center sg-items-center sg-flex-col before:sg-absolute before:sg-top-0 
+      before:sg-bottom-0 before:sg-left-0 before:sg-right-0 before:sg-h-screen before:-sg-z-10 before:sg-bg-black`}
     >
       <div
+        data-testid="image-container"
         role="presentation"
         tabIndex={-1}
         ref={containerRef}
