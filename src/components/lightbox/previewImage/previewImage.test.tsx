@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { PreviewImage } from './previewImage';
-import { getMockedImages } from '../../../utils';
+import { getMockedImages } from '../../utils';
 
 describe('PreviewImage', () => {
   it('should render component', () => {

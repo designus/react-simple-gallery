@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { Lightbox } from './lightbox';
-import { getMockedImages } from '../../utils';
+import { getMockedImages } from '../utils';
 
 function triggerTransitionEnd(element: HTMLElement | null) {
   const event = new Event('transitionend', {

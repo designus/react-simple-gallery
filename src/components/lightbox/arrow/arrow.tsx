@@ -34,10 +34,6 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
         setTransition(false);
       }, 200);
     }
-
-    return () => {
-      clearTimeout(timer.current);
-    };
   }, [transition]);
 
   const handleClick = (newDirection: Direction) => {

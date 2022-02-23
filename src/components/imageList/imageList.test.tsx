@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ImageList } from './imageList';
-import { getMockedImages } from '../../utils';
+import { getMockedImages } from '../utils';
 
 describe('ImageList', () => {
   it('should render a list of thumb images', () => {

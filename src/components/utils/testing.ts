@@ -1,4 +1,4 @@
-import { GalleryImage } from '../components/types';
+import { GalleryImage } from '../types';
 
 export const getMockedImages = (count: number): GalleryImage<string>[] => [...Array(count)].map((photo, index) => ({
   full: `full_${index}.jpg`,

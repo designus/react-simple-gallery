@@ -90,13 +90,7 @@ export function Lightbox<T>(props: Props<T>) {
           };
         });
       }, 50);
-    } else {
-      clearTimeout(timer.current);
     }
-
-    return () => {
-      clearTimeout(timer.current);
-    };
   }, [isTransitioning]);
 
   const handleMove = (newIndex: number, newDirection: Direction) => {
