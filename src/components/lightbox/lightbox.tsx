@@ -30,7 +30,6 @@ export function Lightbox<T>(props: Props<T>) {
   const [activeIndex, setActiveIndex] = useState(props.activeIndex ?? 0);
   const [direction, setDirection] = useState<Direction>('right');
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const timer = useRef<number | undefined>();
 
   const prevIndex = (activeIndex + props.images.length - 1) % props.images.length;
   const nextIndex = (activeIndex + props.images.length + 1) % props.images.length;
@@ -76,7 +75,7 @@ export function Lightbox<T>(props: Props<T>) {
 
   useEffect(() => {
     if (isTransitioning) {
-      timer.current = setTimeout(() => {
+      setTimeout(() => {
         setTransitionState((state) => {
           if (state.nextImage === 'entering') {
             return {

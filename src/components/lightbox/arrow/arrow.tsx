@@ -1,11 +1,11 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Direction } from '../../types';
 import { LeftIcon } from './leftIcon';
 import { RightIcon } from './rightIcon';
 import './arrow.css';
 
 interface Props {
-  className: string;
+  className?: string;
   direction: Direction;
   hasAdjustedPosition: boolean;
   onClick: (direction: Direction) => void;
@@ -16,8 +16,7 @@ export interface PublicChildMethods {
 }
 
 export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
-  const { className, direction, hasAdjustedPosition, onClick } = props;
-  const timer = useRef<number | undefined>();
+  const { className = '', direction, hasAdjustedPosition, onClick } = props;
   const [transition, setTransition] = useState<boolean>(false);
 
   useImperativeHandle(ref, () => ({
@@ -30,18 +29,15 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
 
   useEffect(() => {
     if (transition) {
-      timer.current = setTimeout(() => {
+      setTimeout(() => {
         setTransition(false);
       }, 200);
     }
   }, [transition]);
 
-  const handleClick = (newDirection: Direction) => {
-    onClick(newDirection);
-  };
-
   return (
     <div
+      data-testid="arrow-wrapper"
       className={`sg-arrow sg-group sg-w-14 sm:sg-w-24 sg-flex sg-flex-col sg-justify-center sg-items-center sg-h-full sg-absolute sg-select-none sg-pointer sg-opacity-60  sg-cursor-pointer
         hover:sg-opacity-100 hover:before:sg-absolute hover:before:sg-w-full hover:before:sg-h-full hover:before:-sg-z-10 hover:before:sg-from-black hover:before:sg-opacity-60 sg-z-10
         ${className} ${transition ? 'sg-animate' : ''}`}
@@ -49,10 +45,10 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
       <div
         data-testid={`${direction}-arrow`}
         aria-label={`${direction} arrow`}
-        onClick={() => handleClick(direction)}
+        onClick={() => onClick(direction)}
         onKeyDown={(e) => {
           if (e.code === 'Enter') {
-            handleClick(direction);
+            onClick(direction);
           }
         }}
         role="button"
