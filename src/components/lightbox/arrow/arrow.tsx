@@ -42,32 +42,9 @@ export const Arrow = forwardRef<PublicChildMethods, Props>((props, ref) => {
 
   return (
     <div
-      className={`
-        sg-arrow
-        sg-group
-        sg-w-14
-        sm:sg-w-24
-        sg-flex
-        sg-flex-col
-        sg-justify-center
-        sg-items-center
-        sg-h-full
-        sg-absolute
-        sg-select-none
-        sg-pointer
-        sg-opacity-60
-        sg-cursor-pointer
-        hover:sg-opacity-100
-        hover:before:sg-absolute
-        hover:before:sg-w-full
-        hover:before:sg-h-full
-        hover:before:-sg-z-10
-        hover:before:sg-from-black
-        hover:before:sg-opacity-60
-        sg-z-10
-        ${className}
-        ${transition ? 'sg-animate' : ''}
-      `}
+      className={`sg-arrow sg-group sg-w-14 sm:sg-w-24 sg-flex sg-flex-col sg-justify-center sg-items-center sg-h-full sg-absolute sg-select-none sg-pointer sg-opacity-60  sg-cursor-pointer
+        hover:sg-opacity-100 hover:before:sg-absolute hover:before:sg-w-full hover:before:sg-h-full hover:before:-sg-z-10 hover:before:sg-from-black hover:before:sg-opacity-60 sg-z-10
+        ${className} ${transition ? 'sg-animate' : ''}`}
     >
       <div
         data-testid={`${direction}-arrow`}
