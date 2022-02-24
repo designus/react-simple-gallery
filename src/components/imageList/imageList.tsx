@@ -14,7 +14,7 @@ const defaultRenderThumbImage = (image: GalleryImage<ImageSource>) => {
   );
 };
 
-export interface Props<T extends ImageSource> {
+export interface Props<T extends ImageSource = string> {
   images: GalleryImage<T>[];
   className?: string;
   transition?: TransitionType;
@@ -22,7 +22,7 @@ export interface Props<T extends ImageSource> {
   renderFullImage?: RenderImage<T>;
 }
 
-export function ImageList<T extends ImageSource>(props: Props<T>) {
+export function ImageList<T extends ImageSource = string>(props: Props<T>) {
   const {
     images = [],
     className = '',
