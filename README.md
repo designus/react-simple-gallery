@@ -7,7 +7,6 @@ Simple image gallery for React applications
 * Written in TypeScript
 * Small footprint ~10KB (~4KB Gzipped)
 * Configurable layout (using CSS)
-* Gatsby plugin image support (only dynamic images)
 * Does not support IE11
 
 React simple gallery exports 2 bundles - one for react and one for preact. However preact support is limited - it only works when it gets bundled with Webpack 5 (preact-cli@3.3.5 is still using webpack 4). As a result, preact version of the library has only been tested with gatsby-plugin-preact in latest version of Gatsby build environment.  
@@ -46,10 +45,38 @@ function SimpleGallery() {
   );
 }
 ```
+### Custom layout
+
+```tsx
+// ...
+
+function SimpleGallery() {
+  return (
+    <Gallery
+      className="custom-layout"
+      images={images}
+    />
+  );
+}
+```
+
+```css
+.custom-layout { 
+  display: grid;
+  grid-gap: 6px;
+  grid-template-areas: "A A B"
+                       "A A C";
+}
+
+....
+
+```
 
 ### GatsbyImage support
 
 ```tsx
+// ...
+
 function SimpleGallery() {
   return (
     <Gallery 
