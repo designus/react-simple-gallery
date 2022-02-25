@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import { Lightbox } from './lightbox';
+import { Lightbox } from './Lightbox';
 import { getMockedImages } from '../utils';
 
 function triggerTransitionEnd(element: HTMLElement | null) {

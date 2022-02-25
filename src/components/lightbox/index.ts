@@ -1,1 +1,1 @@
-export * from './lightbox';
+export * from './Lightbox';

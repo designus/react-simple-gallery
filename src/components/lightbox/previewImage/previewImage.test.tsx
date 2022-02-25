@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { PreviewImage } from './previewImage';
+import { PreviewImage } from './PreviewImage';
 import { getMockedImages } from '../../utils';
 
 describe('PreviewImage', () => {

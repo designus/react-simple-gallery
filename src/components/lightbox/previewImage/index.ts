@@ -1,1 +1,1 @@
-export * from './previewImage';
+export * from './PreviewImage';

@@ -1,6 +1,6 @@
 import React, { RefObject } from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import { Arrow, PublicChildMethods } from './arrow';
+import { Arrow, PublicChildMethods } from './Arrow';
 
 describe('Arrow', () => {
   beforeEach(() => {
