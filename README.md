@@ -45,34 +45,8 @@ function SimpleGallery() {
   );
 }
 ```
-### Custom layout
 
-```tsx
-// ...
-
-function SimpleGallery() {
-  return (
-    <Gallery
-      className="custom-layout"
-      images={images}
-    />
-  );
-}
-```
-
-```css
-.custom-layout { 
-  display: grid;
-  grid-gap: 6px;
-  grid-template-areas: "A A B"
-                       "A A C";
-}
-
-....
-
-```
-
-### GatsbyImage support
+### Gatsby Image support
 
 ```tsx
 // ...
@@ -101,17 +75,15 @@ function SimpleGallery() {
   );
 }
 ```
-
-
-## ⚙️ Configuration
+## Configuration
 
 React simple gallery supports the following props:
 
 | Prop              | Type                                        | Default value                                            | Description                                                                   |
 | ----------------- | ------------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------------------------------- |
 | images            | ```GalleryImage[]```                        | ```[]```                                                 | An array of images to be displayed                                            |
-| className         | ```string```                                | ```''```                                                 | Custom class name that can be used to change the layout of the image list     |
-| transition        | ```'none \| fade \| slide'```                 | ```none```                                               | A transition used when navigating from one image to the next in a lightbox    |
+| className         | ```string```                                | ```''```                                                 | Custom class name that can be used to change the layout                       |
+| transition        | ```'none \| fade \| slide'```               | ```none```                                               | A transition used when navigating from one image to the next in a lightbox    |
 | renderThumbImage  | ```(image: GalleryImage) => JSX.Element```  | ```(image: GalleryImage) => <img src={image.thumb} />``` | A custom renderer for a thumb image                                           | 
 | renderFullImage   | ```(image: GalleryImage) => JSX.Element```  | ```(image: GalleryImage) => <img src={image.full} />```  | A custom renderer for a full image                                            | 
  
