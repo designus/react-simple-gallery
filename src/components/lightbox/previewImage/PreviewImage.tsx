@@ -27,7 +27,9 @@ export function PreviewImage<T>(props: Props<T>) {
       onTransitionEnd={onTransitionEnd}
       className={`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center ${image.title ? 'sg-has-title' : ''} ${transitionClass}`}
     >
-      {renderImage(image)}
+      <React.Fragment key="image">
+        {renderImage(image)}
+      </React.Fragment>
       {renderImageTitle()}
     </div>
   );
