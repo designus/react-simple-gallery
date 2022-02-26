@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { CloseButton } from './closeButton';
+import { CloseButton } from './CloseButton';
 
 describe('CloseButton', () => {
   it('should render component', () => {

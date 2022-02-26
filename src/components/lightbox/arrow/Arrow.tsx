@@ -1,7 +1,7 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import { Direction } from '../../types';
-import { LeftIcon } from './leftIcon';
-import { RightIcon } from './rightIcon';
+import { LeftIcon } from './LeftIcon';
+import { RightIcon } from './RightIcon';
 import './arrow.css';
 
 interface Props {

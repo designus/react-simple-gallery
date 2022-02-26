@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { ImageList } from './imageList';
+import { ImageList } from './ImageList';
 import { getMockedImages } from '../utils';
 
 describe('ImageList', () => {

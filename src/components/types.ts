@@ -1,6 +1,6 @@
 export type ImageSource = string | Record<string, any>;
 
-export interface GalleryImage<T extends ImageSource> {
+export interface GalleryImage<T extends ImageSource = string> {
   id?: string | number;
   full: T;
   thumb: T;
