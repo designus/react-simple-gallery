@@ -28,7 +28,7 @@ yarn add @designus/react-simple-gallery
 ### Simple example
 
 ```tsx
-import { Gallery, GalleryImage } from 'react-simple-gallery';
+import { Gallery, GalleryImage } from '@designus/react-simple-gallery';
 import image1 from './assets/1.jpg';
 import image2 from './assets/2.jpg';
 import image3 from './assets/3.jpg';
