@@ -12,3 +12,4 @@ jest.config.ts
 coverage
 __mocks__
 setupTests.ts
+.npmrc
