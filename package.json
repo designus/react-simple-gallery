@@ -7,7 +7,7 @@
     "url": "git+https://github.com/designus/react-simple-gallery.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/@designus"
+    "registry": "https://npm.pkg.github.com/designus"
   },
   "keywords": [
     "react",
