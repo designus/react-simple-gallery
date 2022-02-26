@@ -1,13 +1,10 @@
 {
   "name": "@designus/react-simple-gallery",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Simple image gallery for React applications",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/designus/react-simple-gallery.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/designus"
   },
   "keywords": [
     "react",
