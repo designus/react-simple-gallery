@@ -1,5 +1,5 @@
 {
-  "name": "react-simple-gallery",
+  "name": "@designus/react-simple-gallery",
   "version": "1.0.0",
   "description": "Simple image gallery for React applications",
   "repository": {

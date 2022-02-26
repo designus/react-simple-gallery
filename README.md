@@ -16,11 +16,11 @@ React simple gallery exports 2 bundles - one for react and one for preact. Howev
 This package can be installed with npm
 
 ```
-npm install react-simple-gallery
+npm install @designus/react-simple-gallery
 ```
 or yarn:
 ```
-yarn add react-simple-gallery
+yarn add @designus/react-simple-gallery
 ```
 
 ## Examples
