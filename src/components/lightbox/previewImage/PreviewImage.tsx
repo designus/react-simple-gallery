@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { GalleryImage, RenderImage } from '../../types';
 
 interface Props<T> {
@@ -27,9 +27,9 @@ export function PreviewImage<T>(props: Props<T>) {
       onTransitionEnd={onTransitionEnd}
       className={`sg-image-wrapper sg-absolute sg-top-0 sg-left-0 sg-right-0 sg-bottom-0 sg-w-full sg-m-auto sg-flex sg-flex-col sg-justify-center sg-items-center ${image.title ? 'sg-has-title' : ''} ${transitionClass}`}
     >
-      <React.Fragment key="image">
+      <Fragment key="image">
         {renderImage(image)}
-      </React.Fragment>
+      </Fragment>
       {renderImageTitle()}
     </div>
   );
