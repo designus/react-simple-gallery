@@ -20,6 +20,6 @@ jobs:
       - run: npm publish --tag ${{ github.event.release.target_commitish }} --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: git push
+      - run: git push origin HEAD:master
         env:
           github-token: ${{ secrets.GITHUB_TOKEN }}
