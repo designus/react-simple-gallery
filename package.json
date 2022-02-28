@@ -1,6 +1,6 @@
 {
   "name": "@designus/react-simple-gallery",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Simple image gallery for React applications",
   "repository": {
     "type": "git",
