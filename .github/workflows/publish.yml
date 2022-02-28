@@ -13,13 +13,14 @@ jobs:
       - run: npm ci --ignore-scripts
       - run: git config --global user.name "GitHub CD bot"
       - run: git config --global user.email "github-cd-bot@example.com"
-      - run: npm version ${{ github.event.release.tag_name }}
+      - run: npm version ${{ github.event.release.tag_name }} --no-git-tag-version
       - run: npm run build
       - run: npm run test
       # - run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
       # - run: npm publish --tag ${{ github.event.release.target_commitish }} --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: git commit -m "bump version number"
       - run: git push origin HEAD:master
         env:
           github-token: ${{ secrets.GITHUB_TOKEN }}
