@@ -17,8 +17,8 @@ jobs:
       - run: git commit -am "bump version number"
       - run: npm run build
       - run: npm run test
-      # - run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
-      # - run: npm publish --tag ${{ github.event.release.target_commitish }} --access public
+      - run: npm config set '//registry.npmjs.org/:_authToken' "${{ secrets.NPM_TOKEN }}"
+      - run: npm publish --tag ${{ github.event.release.target_commitish }} --access public
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
       - run: git push origin HEAD:master
