@@ -5,7 +5,7 @@ Simple image gallery for React applications
 
 * Zero dependencies
 * Written in TypeScript
-* Small footprint ~10KB (~4KB Gzipped)
+* Size: ~21KB and ~6KB Gzipped
 * Configurable layout (using CSS)
 * Does not support IE11
 
